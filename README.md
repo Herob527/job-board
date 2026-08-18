@@ -36,16 +36,32 @@ User:
 
 Candidate:
 
-- user_id
-- skill[]
-- experience[]
+- userId
+- skill (CandidateSkill)[]
+- experience (CandidateExperience)[]
+- projects
+
+CandidateSkill
+
+- userId
+- name
+- seniority
+
+CandidateExperience
+
+- userId
+- companyName (string)
+- startDate (Date)
+- endDate (Date?)
+- description (string)
+- stack (string)[]
 
 Recruiter:
 
-- user_id
-- company_id
+- userId
+- companyId
 
-Job offer:
+JobOffer:
 
 - id
 - title
@@ -55,15 +71,27 @@ Job offer:
 - employmentType (enum Employment Contact, B2B, Mandate)[]
 - seniority (enum Junior, Mid, Senior)[]
 - location[]
-- skill[]
+- skill (JobOfferSkill)[]
+
+JobOfferSkill
+
+- jobOfferId
+- name
+- seniority
+
+Resume:
+
+- userId
+- CvFileRef
 
 Application:
 
 - userId
 - jobOfferId
-- CvFileRef
-- additionalInfo
-- status
+- resumeId
+- additionalInfo (markdown)
+- status (enum Sent, Seen, Interested, Hired, Rejected)
+- additionalResponseInfo (markdown?)
 
 Company:
 
