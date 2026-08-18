@@ -13,7 +13,7 @@ EXPOSE 4321
 
 COPY . /app
 
-CMD ["bun","run", "dev"]
+CMD ["bun","run", "dev", "--","--host"]
 
 FROM dev AS build
 
