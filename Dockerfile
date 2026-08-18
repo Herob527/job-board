@@ -1,8 +1,17 @@
 FROM oven/bun:1.3.14-debian AS base
 
-RUN bun install
+WORKDIR /app
+
+COPY package.json /app/package.json
+COPY bun.lock /app/bun.lock
+
+RUN bun install --frozen-lockfile
 
 FROM base AS dev
+
+EXPOSE 4321
+
+COPY . /app
 
 CMD ["bun","run", "dev"]
 
