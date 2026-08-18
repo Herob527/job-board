@@ -2,7 +2,15 @@
 
 Fullstack project aimed to create job board mainly for learning purposes.
 
-Stack to be determined
+Fullstack Stack:
+
+- Astro
+- PostreSQL
+- Kubernetes (wanting to learn it)
+
+AI Stack:
+
+- To be determined
 
 ## Service Scope
 
@@ -22,17 +30,46 @@ User:
 - id
 - name
 - surname
-- skills
-- cv ref
-- role
+- email
+- password
+- country
+
+Candidate:
+
+- user_id
+- skill[]
+- experience[]
+
+Recruiter:
+
+- user_id
+- company_id
 
 Job offer:
 
 - id
 - title
-- description
-- location
-- skills
+- description (markdown long text)
+- remoteType (enum Office, Hybrid, Remote)[]
+- salary[] (tuple) (nullable)
+- employmentType (enum Employment Contact, B2B, Mandate)[]
+- seniority (enum Junior, Mid, Senior)[]
+- location[]
+- skill[]
+
+Application:
+
+- userId
+- jobOfferId
+- CvFileRef
+- additionalInfo
+- status
+
+Company:
+
+- id
+- name
+- location[]
 
 ## AI Village
 
@@ -54,7 +91,7 @@ But not impossible
 
 - [ ] Agents have limited learning capability, so they cannot be master of all trades, just know a lot
 - [ ] Unused skill will decay over time regardless of experience, but relearning will be faster than learning for the first time
-- [ ] Used skill will improve when working or having incentive to learn
+- [ ] Used skill will improve when working faster or creating projects
 - [ ] Agents have limited lifespan or might get fired
 - [ ] Will create projects that will raise skill (when having job, it'll raise slowly)
 - [ ] Will create CV that will include own projects, skills and experience in previous companies
@@ -81,7 +118,7 @@ But not impossible
 - [ ] Will have specific location
 - [ ] Will have specific capacity
 - [ ] Will fire candidates when they are not needed for too long or cannot be sustained due to limited budget
-- [ ] Project will provide revenue, but it's not guaranteed to succeed
+- [ ] Project will provide revenue, but it's not guaranteed to succeed and still will cost
 
 ## Commands
 
