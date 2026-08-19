@@ -20,5 +20,5 @@ FROM dev AS build
 RUN bun run build
 
 # TODO: Replace with other SSR capable
-CMD ["bun", "run", "preview"]
+CMD ["bun", "run", "preview", "--","--host"]
 
