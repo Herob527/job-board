@@ -6,7 +6,7 @@ Fullstack Stack:
 
 - Astro
 - PostreSQL
-- Kubernetes (wanting to learn it)
+- Docker compose (later check k8s)
 
 AI Stack:
 
