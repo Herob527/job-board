@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: astro
+  labels:
+    app: astro
+spec:
+  containers:
+    - name: astro
+      # Must build image first
+      image: "job-board:latest"
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 4321

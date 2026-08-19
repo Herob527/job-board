@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: astro
-  labels:
-    app: astro
 spec:
   replicas: 3
   selector:
@@ -22,3 +20,6 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 4321
+
+          
+
