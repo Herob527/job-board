@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: astro
+  labels:
+    app: astro
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: astro
+  template:
+    metadata: 
+      name: astro
+      labels:
+        app: astro
+    spec:
+      containers:
+        - name: astro
+          image: "job-board:latest"
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4321
