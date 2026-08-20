@@ -165,7 +165,7 @@ export const jobOffer = pgTable(
 		location: text().array().notNull().default(sql`'{}'`),
 		...timestamps,
 	},
-	(t) => [check("salaryCheck", sql`${t.minSalary} <= ${t.maxSalary}`)],
+	(t) => [check("salaryCheck", sql`${t.minSalary} < ${t.maxSalary}`)],
 );
 
 export const jobOfferSkill = pgTable(
