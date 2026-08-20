@@ -30,18 +30,25 @@ export const applicationStatusEnum = pgEnum("application_status", [
 	"Rejected",
 ]);
 
+const stringSizes = {
+  short: 255,
+  url: 1024,
+  currency: 3,
+  markdown: 16536,
+} as const;
+
 const timestamps = {
-	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-	updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 };
 
 export const users = pgTable("User", {
 	id: uuid().primaryKey().default(sql`uuidv7()`),
-	name: varchar("name", { length: 255 }).notNull(),
-	surname: varchar("surname", { length: 255 }),
-	country: varchar("country", { length: 255 }),
-	email: varchar("email", { length: 255 }).notNull(),
-	password: varchar("password", { length: 255 }).notNull(),
+	name: varchar("name", { length: stringSizes.short }).notNull(),
+	surname: varchar("surname", { length: stringSizes.short }),
+	country: varchar("country", { length: stringSizes.short }),
+	email: varchar("email", { length: stringSizes.short }).notNull(),
+	password: varchar("password", { length: stringSizes.short }).notNull(),
 	...timestamps,
 });
 
@@ -58,7 +65,7 @@ export const candidateSkill = pgTable(
 		userId: uuid()
 			.references(() => users.id)
 			.notNull(),
-		name: varchar("name", { length: 255 }).notNull(),
+		name: varchar("name", { length: stringSizes.short }).notNull(),
 		seniority: seniorityEnum().notNull(),
 		...timestamps,
 	},
@@ -71,10 +78,10 @@ export const candidateExperience = pgTable(
 		userId: uuid()
 			.references(() => users.id)
 			.notNull(),
-		companyName: varchar("company_name", { length: 255 }).notNull(),
+		companyName: varchar("company_name", { length: stringSizes.short }).notNull(),
 		startDate: date().notNull(),
 		endDate: date(),
-		description: text().notNull(),
+		description: varchar({ length: stringSizes.markdown }).notNull(),
 		stack: text().array().notNull().default(sql`'{}'`),
 		...timestamps,
 	},
@@ -86,15 +93,15 @@ export const candidateProject = pgTable("CandidateProject", {
 	userId: uuid()
 		.references(() => users.id)
 		.notNull(),
-	link: varchar("link", { length: 1024 }),
-	description: text().notNull(),
-	stack: text().array().notNull().default(sql`'{}'`),
+	link: varchar("link", { length: stringSizes.url }),
+		description: varchar({ length: stringSizes.markdown }).notNull(),
+		stack: text().array().notNull().default(sql`'{}'`),
 	...timestamps,
 });
 
 export const company = pgTable("Company", {
 	id: uuid().primaryKey().default(sql`uuidv7()`),
-	name: varchar("name", { length: 255 }).notNull(),
+	name: varchar("name", { length: stringSizes.short }).notNull(),
 	location: text().array().notNull().default(sql`'{}'`),
 	...timestamps,
 });
@@ -131,7 +138,7 @@ export const jobOffer = pgTable("JobOffer", {
 	companyId: uuid()
 		.references(() => company.id)
 		.notNull(),
-	title: varchar("title", { length: 255 }).notNull(),
+	title: varchar("title", { length: stringSizes.short }).notNull(),
 	description: text().notNull(),
 	remoteType: remoteTypeEnum()
 		.array()
@@ -139,7 +146,7 @@ export const jobOffer = pgTable("JobOffer", {
 		.default(sql`'{}'::remote_type[]`),
 	minSalary: integer(),
 	maxSalary: integer(),
-	currency: varchar("currency", { length: 16 }),
+	currency: varchar("currency", { length: stringSizes.currency }),
 	employmentType: employmentTypeEnum()
 		.array()
 		.notNull()
@@ -155,7 +162,7 @@ export const jobOfferSkill = pgTable(
 		jobOfferId: uuid()
 			.references(() => jobOffer.id)
 			.notNull(),
-		name: varchar("name", { length: 255 }).notNull(),
+		name: varchar("name", { length: stringSizes.short }).notNull(),
 		seniority: seniorityEnum().notNull(),
 		...timestamps,
 	},
@@ -166,7 +173,7 @@ export const resume = pgTable("Resume", {
 	userId: uuid()
 		.primaryKey()
 		.references(() => users.id),
-	cvFileRef: varchar("cv_file_ref", { length: 1024 }).notNull(),
+	cvFileRef: varchar("cv_file_ref", { length: stringSizes.url }).notNull(),
 	...timestamps,
 });
 
@@ -182,9 +189,9 @@ export const application = pgTable(
 		resumeId: uuid()
 			.references(() => resume.userId)
 			.notNull(),
-		additionalInfo: text(),
+		additionalInfo: varchar({ length: stringSizes.markdown }),
 		status: applicationStatusEnum().notNull().default("Sent"),
-		additionalResponseInfo: text(),
+		additionalResponseInfo: varchar({ length: stringSizes.markdown }),
 		...timestamps,
 	},
 	(t) => [primaryKey({ columns: [t.userId, t.jobOfferId] })],

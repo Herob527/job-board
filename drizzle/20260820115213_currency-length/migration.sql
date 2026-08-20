@@ -1,0 +1,1 @@
+ALTER TABLE "JobOffer" ALTER COLUMN "currency" SET DATA TYPE varchar(3) USING "currency"::varchar(3);
