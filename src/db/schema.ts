@@ -8,6 +8,7 @@ import {
 	text,
 	timestamp,
 	unique,
+	check,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
@@ -105,7 +106,7 @@ export const candidateProject = pgTable("CandidateProject", {
 
 export const company = pgTable("Company", {
 	id: uuid().primaryKey().default(sql`uuidv7()`),
-	name: varchar("name", { length: stringSizes.short }).notNull(),
+	name: varchar("name", { length: stringSizes.short }).notNull().unique(),
 	location: text().array().notNull().default(sql`'{}'`),
 	...timestamps,
 });
@@ -137,28 +138,35 @@ export const platformAdmin = pgTable("PlatformAdmin", {
 	...timestamps,
 });
 
-export const jobOffer = pgTable("JobOffer", {
-	id: uuid().primaryKey().default(sql`uuidv7()`),
-	companyId: uuid()
-		.references(() => company.id)
-		.notNull(),
-	title: varchar("title", { length: stringSizes.short }).notNull(),
-	description: varchar({ length: stringSizes.markdown }).notNull(),
-	remoteType: remoteTypeEnum()
-		.array()
-		.notNull()
-		.default(sql`'{}'::remote_type[]`),
-	minSalary: integer(),
-	maxSalary: integer(),
-	currency: varchar("currency", { length: stringSizes.currency }),
-	employmentType: employmentTypeEnum()
-		.array()
-		.notNull()
-		.default(sql`'{}'::employment_type[]`),
-	seniority: seniorityEnum().array().notNull().default(sql`'{}'::seniority[]`),
-	location: text().array().notNull().default(sql`'{}'`),
-	...timestamps,
-});
+export const jobOffer = pgTable(
+	"JobOffer",
+	{
+		id: uuid().primaryKey().default(sql`uuidv7()`),
+		companyId: uuid()
+			.references(() => company.id)
+			.notNull(),
+		title: varchar("title", { length: stringSizes.short }).notNull(),
+		description: varchar({ length: stringSizes.markdown }).notNull(),
+		remoteType: remoteTypeEnum()
+			.array()
+			.notNull()
+			.default(sql`'{}'::remote_type[]`),
+		minSalary: integer(),
+		maxSalary: integer(),
+		currency: varchar("currency", { length: stringSizes.currency }),
+		employmentType: employmentTypeEnum()
+			.array()
+			.notNull()
+			.default(sql`'{}'::employment_type[]`),
+		seniority: seniorityEnum()
+			.array()
+			.notNull()
+			.default(sql`'{}'::seniority[]`),
+		location: text().array().notNull().default(sql`'{}'`),
+		...timestamps,
+	},
+	(t) => [check("salaryCheck", sql`${t.minSalary} <= ${t.maxSalary}`)],
+);
 
 export const jobOfferSkill = pgTable(
 	"JobOfferSkill",
