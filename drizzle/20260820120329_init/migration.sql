@@ -6,9 +6,9 @@ CREATE TABLE "Application" (
 	"userId" uuid,
 	"jobOfferId" uuid,
 	"resumeId" uuid NOT NULL,
-	"additionalInfo" text,
+	"additionalInfo" varchar(16536),
 	"status" "application_status" DEFAULT 'Sent'::"application_status" NOT NULL,
-	"additionalResponseInfo" text,
+	"additionalResponseInfo" varchar(16536),
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "Application_pkey" PRIMARY KEY("userId","jobOfferId")
@@ -21,33 +21,26 @@ CREATE TABLE "Candidate" (
 );
 --> statement-breakpoint
 CREATE TABLE "CandidateExperience" (
-	"userId" uuid,
-	"company_name" varchar(255),
-	"startDate" date,
+	"id" uuid PRIMARY KEY DEFAULT uuidv7(),
+	"userId" uuid NOT NULL,
+	"company_name" varchar(255) NOT NULL,
+	"startDate" date NOT NULL,
 	"endDate" date,
-	"description" text NOT NULL,
+	"description" varchar(16536) NOT NULL,
 	"stack" text[] DEFAULT '{}'::text[] NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "CandidateExperience_pkey" PRIMARY KEY("userId","company_name","startDate")
+	CONSTRAINT "CandidateExperience_userId_company_name_startDate_unique" UNIQUE("userId","company_name","startDate")
 );
 --> statement-breakpoint
 CREATE TABLE "CandidateProject" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7(),
 	"userId" uuid NOT NULL,
 	"link" varchar(1024),
-	"description" text NOT NULL,
+	"description" varchar(16536) NOT NULL,
 	"stack" text[] DEFAULT '{}'::text[] NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE "CandidateProjectStackItem" (
-	"candidateProjectId" uuid,
-	"name" varchar(255),
-	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "CandidateProjectStackItem_pkey" PRIMARY KEY("candidateProjectId","name")
 );
 --> statement-breakpoint
 CREATE TABLE "CandidateSkill" (
@@ -67,14 +60,22 @@ CREATE TABLE "Company" (
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "CompanyAdmin" (
+	"id" uuid PRIMARY KEY,
+	"companyId" uuid NOT NULL,
+	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "JobOffer" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7(),
+	"companyId" uuid NOT NULL,
 	"title" varchar(255) NOT NULL,
-	"description" text NOT NULL,
+	"description" varchar(16536) NOT NULL,
 	"remoteType" "remote_type"[] DEFAULT '{}'::"remote_type"[] NOT NULL,
 	"minSalary" integer,
 	"maxSalary" integer,
-	"currency" varchar(16),
+	"currency" varchar(3),
 	"employmentType" "employment_type"[] DEFAULT '{}'::"employment_type"[] NOT NULL,
 	"seniority" "seniority"[] DEFAULT '{}'::"seniority"[] NOT NULL,
 	"location" text[] DEFAULT '{}'::text[] NOT NULL,
@@ -91,6 +92,12 @@ CREATE TABLE "JobOfferSkill" (
 	CONSTRAINT "JobOfferSkill_pkey" PRIMARY KEY("jobOfferId","name")
 );
 --> statement-breakpoint
+CREATE TABLE "PlatformAdmin" (
+	"id" uuid PRIMARY KEY,
+	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "Recruiter" (
 	"id" uuid PRIMARY KEY,
 	"companyId" uuid NOT NULL,
@@ -105,18 +112,29 @@ CREATE TABLE "Resume" (
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "user" RENAME TO "User";--> statement-breakpoint
-ALTER TABLE "User" ADD COLUMN "createdAt" timestamp with time zone DEFAULT now() NOT NULL;--> statement-breakpoint
-ALTER TABLE "User" ADD COLUMN "updatedAt" timestamp with time zone DEFAULT now() NOT NULL;--> statement-breakpoint
+CREATE TABLE "User" (
+	"id" uuid PRIMARY KEY DEFAULT uuidv7(),
+	"name" varchar(255) NOT NULL,
+	"surname" varchar(255),
+	"country" varchar(255),
+	"email" varchar(255) NOT NULL UNIQUE,
+	"password" varchar(255) NOT NULL,
+	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 ALTER TABLE "Application" ADD CONSTRAINT "Application_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "Application" ADD CONSTRAINT "Application_jobOfferId_JobOffer_id_fkey" FOREIGN KEY ("jobOfferId") REFERENCES "JobOffer"("id");--> statement-breakpoint
 ALTER TABLE "Application" ADD CONSTRAINT "Application_resumeId_Resume_userId_fkey" FOREIGN KEY ("resumeId") REFERENCES "Resume"("userId");--> statement-breakpoint
 ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_id_User_id_fkey" FOREIGN KEY ("id") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "CandidateExperience" ADD CONSTRAINT "CandidateExperience_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "CandidateProject" ADD CONSTRAINT "CandidateProject_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
-ALTER TABLE "CandidateProjectStackItem" ADD CONSTRAINT "CandidateProjectStackItem_8IV5SRth8x3I_fkey" FOREIGN KEY ("candidateProjectId") REFERENCES "CandidateProject"("id");--> statement-breakpoint
 ALTER TABLE "CandidateSkill" ADD CONSTRAINT "CandidateSkill_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
+ALTER TABLE "CompanyAdmin" ADD CONSTRAINT "CompanyAdmin_id_User_id_fkey" FOREIGN KEY ("id") REFERENCES "User"("id");--> statement-breakpoint
+ALTER TABLE "CompanyAdmin" ADD CONSTRAINT "CompanyAdmin_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");--> statement-breakpoint
+ALTER TABLE "JobOffer" ADD CONSTRAINT "JobOffer_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");--> statement-breakpoint
 ALTER TABLE "JobOfferSkill" ADD CONSTRAINT "JobOfferSkill_jobOfferId_JobOffer_id_fkey" FOREIGN KEY ("jobOfferId") REFERENCES "JobOffer"("id");--> statement-breakpoint
+ALTER TABLE "PlatformAdmin" ADD CONSTRAINT "PlatformAdmin_id_User_id_fkey" FOREIGN KEY ("id") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "Recruiter" ADD CONSTRAINT "Recruiter_id_User_id_fkey" FOREIGN KEY ("id") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "Recruiter" ADD CONSTRAINT "Recruiter_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");--> statement-breakpoint
 ALTER TABLE "Resume" ADD CONSTRAINT "Resume_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");

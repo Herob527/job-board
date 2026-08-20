@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "5ef71ca0-f818-452d-b0f7-49aa2f05e114",
+  "id": "0525eff6-00cc-4947-8d24-36bf0724df4b",
   "prevIds": [
-    "89afde03-6158-488c-8be2-bc8b0817f6d7"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -166,7 +166,7 @@
       "table": "Application"
     },
     {
-      "type": "text",
+      "type": "varchar(16536)",
       "typeSchema": null,
       "notNull": false,
       "dimensions": 0,
@@ -192,7 +192,7 @@
       "table": "Application"
     },
     {
-      "type": "text",
+      "type": "varchar(16536)",
       "typeSchema": null,
       "notNull": false,
       "dimensions": 0,
@@ -274,6 +274,19 @@
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
+      "default": "uuidv7()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "CandidateExperience"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
       "default": null,
       "generated": null,
       "identity": null,
@@ -322,7 +335,7 @@
       "table": "CandidateExperience"
     },
     {
-      "type": "text",
+      "type": "varchar(16536)",
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
@@ -413,7 +426,7 @@
       "table": "CandidateProject"
     },
     {
-      "type": "text",
+      "type": "varchar(16536)",
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
@@ -686,7 +699,7 @@
       "table": "JobOffer"
     },
     {
-      "type": "text",
+      "type": "varchar(16536)",
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
@@ -738,7 +751,7 @@
       "table": "JobOffer"
     },
     {
-      "type": "varchar(16)",
+      "type": "varchar(3)",
       "typeSchema": null,
       "notNull": false,
       "dimensions": 0,
@@ -1396,18 +1409,6 @@
     {
       "columns": [
         "userId",
-        "company_name",
-        "startDate"
-      ],
-      "nameExplicit": false,
-      "name": "CandidateExperience_pkey",
-      "entityType": "pks",
-      "schema": "public",
-      "table": "CandidateExperience"
-    },
-    {
-      "columns": [
-        "userId",
         "name"
       ],
       "nameExplicit": false,
@@ -1435,6 +1436,16 @@
       "name": "Candidate_pkey",
       "schema": "public",
       "table": "Candidate",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "CandidateExperience_pkey",
+      "schema": "public",
+      "table": "CandidateExperience",
       "entityType": "pks"
     },
     {
@@ -1512,10 +1523,34 @@
         "id"
       ],
       "nameExplicit": false,
-      "name": "user_pkey",
+      "name": "User_pkey",
       "schema": "public",
       "table": "User",
       "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userId",
+        "company_name",
+        "startDate"
+      ],
+      "nullsNotDistinct": false,
+      "name": "CandidateExperience_userId_company_name_startDate_unique",
+      "entityType": "uniques",
+      "schema": "public",
+      "table": "CandidateExperience"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "email"
+      ],
+      "nullsNotDistinct": false,
+      "name": "User_email_key",
+      "schema": "public",
+      "table": "User",
+      "entityType": "uniques"
     }
   ],
   "renames": []

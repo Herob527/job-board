@@ -1,2 +1,0 @@
-ALTER TABLE "JobOffer" ADD COLUMN "companyId" uuid NOT NULL;--> statement-breakpoint
-ALTER TABLE "JobOffer" ADD CONSTRAINT "JobOffer_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");
