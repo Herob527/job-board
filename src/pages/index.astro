@@ -1,6 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import Layout from "../layouts/Layout.astro";
+import LoginForm from "../components/LoginForm";
 
 const test = () => {
 	const t2 = "";
@@ -16,20 +17,7 @@ console.log(login);
 		<section class="test">
 			<h1>test</h1>
 		</section>
-		<form
-			action={actions.login}
-			method="POST">
-			<input
-				type="email"
-				name="email"
-				class="border border-amber-400" />
-			<input
-				type="password"
-				name="password"
-				class="border border-amber-400" />
-			<button type="submit">Login</button>
-		</form>
-		{login}
+		<LoginForm client:load />
 	</div>
 </Layout>
 
