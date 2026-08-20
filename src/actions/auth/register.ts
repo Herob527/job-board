@@ -3,6 +3,9 @@ import { z } from "astro/zod";
 
 export default defineAction({
 	input: z.object({
+		name: z.string(),
+		surname: z.string(),
+		country: z.string(),
 		email: z.email(),
 		password: z.string(),
 		confirmPassword: z.string(),
