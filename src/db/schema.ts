@@ -7,6 +7,7 @@ import {
 	primaryKey,
 	text,
 	timestamp,
+	unique,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
@@ -47,7 +48,7 @@ export const users = pgTable("User", {
 	name: varchar("name", { length: stringSizes.short }).notNull(),
 	surname: varchar("surname", { length: stringSizes.short }),
 	country: varchar("country", { length: stringSizes.short }),
-	email: varchar("email", { length: stringSizes.short }).notNull(),
+	email: varchar("email", { length: stringSizes.short }).notNull().unique(),
 	password: varchar("password", { length: stringSizes.short }).notNull(),
 	...timestamps,
 });
@@ -72,20 +73,24 @@ export const candidateSkill = pgTable(
 	(t) => [primaryKey({ columns: [t.userId, t.name] })],
 );
 
-export const candidateExperience = pgTable("CandidateExperience", {
-	id: uuid().primaryKey().default(sql`uuidv7()`),
-	userId: uuid()
-		.references(() => users.id)
-		.notNull(),
-	companyName: varchar("company_name", {
-		length: stringSizes.short,
-	}).notNull(),
-	startDate: date().notNull(),
-	endDate: date(),
-	description: varchar({ length: stringSizes.markdown }).notNull(),
-	stack: text().array().notNull().default(sql`'{}'`),
-	...timestamps,
-});
+export const candidateExperience = pgTable(
+	"CandidateExperience",
+	{
+		id: uuid().primaryKey().default(sql`uuidv7()`),
+		userId: uuid()
+			.references(() => users.id)
+			.notNull(),
+		companyName: varchar("company_name", {
+			length: stringSizes.short,
+		}).notNull(),
+		startDate: date().notNull(),
+		endDate: date(),
+		description: varchar({ length: stringSizes.markdown }).notNull(),
+		stack: text().array().notNull().default(sql`'{}'`),
+		...timestamps,
+	},
+	(t) => [unique().on(t.userId, t.companyName, t.startDate)],
+);
 
 export const candidateProject = pgTable("CandidateProject", {
 	id: uuid().primaryKey().default(sql`uuidv7()`),
@@ -138,7 +143,7 @@ export const jobOffer = pgTable("JobOffer", {
 		.references(() => company.id)
 		.notNull(),
 	title: varchar("title", { length: stringSizes.short }).notNull(),
-	description: text().notNull(),
+	description: varchar({ length: stringSizes.markdown }).notNull(),
 	remoteType: remoteTypeEnum()
 		.array()
 		.notNull()
