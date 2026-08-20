@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+	check,
 	date,
 	integer,
 	pgEnum,
@@ -8,7 +9,6 @@ import {
 	text,
 	timestamp,
 	unique,
-	check,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
