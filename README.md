@@ -21,6 +21,7 @@ Fullstack job board
 - [ ] Job offer will contain information regarding job title, salary, description, skills (by seniority) and location
 - [ ] Searching and applying for job offers for candidates
 - [ ] Storing resumes to apply later
+- [ ] Candidates will be able to tell about their skills and projects more in detail
 - [ ] Feedback system so user will know about their application status
 
 ### Current schema
@@ -55,6 +56,19 @@ CandidateExperience
 - endDate (Date?)
 - description (string)
 - stack (string)[]
+
+CandidateProject
+
+- id
+- userId
+- link
+- description (markdown)
+- stack
+
+CandidateProjectStackItem
+
+- candidateProjectId
+- name
 
 Recruiter:
 
