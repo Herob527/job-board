@@ -31,15 +31,15 @@ export const applicationStatusEnum = pgEnum("application_status", [
 ]);
 
 const stringSizes = {
-  short: 255,
-  url: 1024,
-  currency: 3,
-  markdown: 16536,
+	short: 255,
+	url: 1024,
+	currency: 3,
+	markdown: 16536,
 } as const;
 
 const timestamps = {
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 };
 
 export const users = pgTable("User", {
@@ -72,21 +72,20 @@ export const candidateSkill = pgTable(
 	(t) => [primaryKey({ columns: [t.userId, t.name] })],
 );
 
-export const candidateExperience = pgTable(
-	"CandidateExperience",
-	{
-		userId: uuid()
-			.references(() => users.id)
-			.notNull(),
-		companyName: varchar("company_name", { length: stringSizes.short }).notNull(),
-		startDate: date().notNull(),
-		endDate: date(),
-		description: varchar({ length: stringSizes.markdown }).notNull(),
-		stack: text().array().notNull().default(sql`'{}'`),
-		...timestamps,
-	},
-	(t) => [primaryKey({ columns: [t.userId, t.companyName] })],
-);
+export const candidateExperience = pgTable("CandidateExperience", {
+	id: uuid().primaryKey().default(sql`uuidv7()`),
+	userId: uuid()
+		.references(() => users.id)
+		.notNull(),
+	companyName: varchar("company_name", {
+		length: stringSizes.short,
+	}).notNull(),
+	startDate: date().notNull(),
+	endDate: date(),
+	description: varchar({ length: stringSizes.markdown }).notNull(),
+	stack: text().array().notNull().default(sql`'{}'`),
+	...timestamps,
+});
 
 export const candidateProject = pgTable("CandidateProject", {
 	id: uuid().primaryKey().default(sql`uuidv7()`),
@@ -94,8 +93,8 @@ export const candidateProject = pgTable("CandidateProject", {
 		.references(() => users.id)
 		.notNull(),
 	link: varchar("link", { length: stringSizes.url }),
-		description: varchar({ length: stringSizes.markdown }).notNull(),
-		stack: text().array().notNull().default(sql`'{}'`),
+	description: varchar({ length: stringSizes.markdown }).notNull(),
+	stack: text().array().notNull().default(sql`'{}'`),
 	...timestamps,
 });
 
@@ -190,7 +189,9 @@ export const application = pgTable(
 			.references(() => resume.userId)
 			.notNull(),
 		additionalInfo: varchar({ length: stringSizes.markdown }),
-		status: applicationStatusEnum().notNull().default("Sent"),
+		status: applicationStatusEnum()
+			.notNull()
+			.default(applicationStatusEnum.enumValues[0]),
 		additionalResponseInfo: varchar({ length: stringSizes.markdown }),
 		...timestamps,
 	},
