@@ -1,5 +1,6 @@
 ---
 import { actions } from "astro:actions";
+import Layout from "../layouts/Layout.astro";
 
 const test = () => {
 	const t2 = "";
@@ -9,45 +10,28 @@ const login = await Astro.session?.get("login");
 console.log(login);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link
-			rel="icon"
-			type="image/svg+xml"
-			href="/favicon.svg" />
-		<link
-			rel="icon"
-			href="/favicon.ico" />
-		<meta
-			name="viewport"
-			content="width=device-width" />
-		<meta
-			name="generator"
-			content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-		<div>
-			<section class="test">
-				<h1>test</h1>
-			</section>
-			<form
-				action={actions.login}
-				method="POST">
-				<input
-					type="text"
-					name="email" />
-				<input
-					type="password"
-					name="password" />
-				<button type="submit">Login</button>
-			</form>
-			{login}
-		</div>
-	</body>
-</html>
+<Layout>
+	<h1>Astro</h1>
+	<div>
+		<section class="test">
+			<h1>test</h1>
+		</section>
+		<form
+			action={actions.login}
+			method="POST">
+			<input
+				type="email"
+				name="email"
+				class="border border-amber-400" />
+			<input
+				type="password"
+				name="password"
+				class="border border-amber-400" />
+			<button type="submit">Login</button>
+		</form>
+		{login}
+	</div>
+</Layout>
 
 <script>
 const form = document.forms[0];
