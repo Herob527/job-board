@@ -20,15 +20,3 @@ console.log(login);
 		<LoginForm client:load />
 	</div>
 </Layout>
-
-<script>
-const form = document.forms[0];
-form.addEventListener("submit", (e) => {
-	e.preventDefault();
-	console.log(form);
-	fetch(form.action, {
-		method: form.method,
-		body: new FormData(form),
-	});
-});
-</script>
