@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/preact-query";
+import type { FunctionComponent } from "preact";
 
 const queryClient = new QueryClient();
 
-const withQuery = (Component) => () => {
+const withQuery = (Component: FunctionComponent) => () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Component />
