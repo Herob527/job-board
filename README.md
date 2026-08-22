@@ -26,92 +26,76 @@ Fullstack job board
 
 ### Current schema
 
+> Every table carries `createdAt` / `updatedAt` timestamps (omitted below for brevity).
+
+Enums:
+
+- `remote_type`: Office, Hybrid, Remote
+- `employment_type`: Employment Contact, B2B, Mandate
+- `seniority`: Junior, Mid, Senior
+- `application_status`: Sent, Seen, Interested, Hired, Rejected
+- `corporate_role`: company_admin, recruiter
+- `role`: candidate, corporate, platform_admin
+
 User:
 
-- id
+- id (uuid)
 - name
-- surname
-- email
+- surname?
+- email (unique)
 - password
-- country
+- country?
 
-Candidate:
+Roles — a user may hold several roles; each is a row in `UserRole`:
 
-- userId
-- skill (CandidateSkill)[]
-- experience (CandidateExperience)[]
-- projects
+- `UserRole`: userId, role (`candidate` | `corporate` | `platform_admin`) — PK (userId, role)
+- A `corporate` user can belong to multiple companies via `CorporateMembership`:
+  - userId, role (constant `corporate`), companyId, subRoles (`corporate_role`[]) — PK (userId, role, companyId)
+  - FK (userId, role) → `UserRole` (ON DELETE CASCADE): a membership can only exist if the `corporate` role row exists
 
-CandidateSkill
+Candidate data (a user with the `candidate` role):
 
-- userId
-- name
-- seniority
-
-CandidateExperience
-
-- userId
-- companyName (string)
-- startDate (Date)
-- endDate (Date?)
-- description (string)
-- stack (string)[]
-
-CandidateProject
-
-- id
-- userId
-- link
-- description (markdown)
-- stack
-
-CandidateProjectStackItem
-
-- candidateProjectId
-- name
-
-Recruiter:
-
-- userId
-- companyId
-
-JobOffer:
-
-- id
-- title
-- description (markdown long text)
-- remoteType (enum Office, Hybrid, Remote)[]
-- salary[] (tuple) (nullable)
-- employmentType (enum Employment Contact, B2B, Mandate)[]
-- seniority (enum Junior, Mid, Senior)[]
-- location[]
-- skill (JobOfferSkill)[]
-
-JobOfferSkill
-
-- jobOfferId
-- name
-- seniority
-
-Resume:
-
-- userId
-- CvFileRef
-
-Application:
-
-- userId
-- jobOfferId
-- resumeId
-- additionalInfo (markdown)
-- status (enum Sent, Seen, Interested, Hired, Rejected)
-- additionalResponseInfo (markdown?)
+- `CandidateSkill`: userId, name, seniority — PK (userId, name)
+- `CandidateExperience`: id, userId, companyName, startDate, endDate?, description (markdown), stack[] — unique (userId, companyName, startDate)
+- `CandidateProject`: id, userId, link?, description (markdown), stack[]
 
 Company:
 
 - id
-- name
+- name (unique)
 - location[]
+
+JobOffer:
+
+- id
+- companyId (FK Company)
+- title
+- description (markdown)
+- remoteType (`remote_type`)[]
+- minSalary (int?), maxSalary (int?), currency (varchar(3))
+- employmentType (`employment_type`)[]
+- seniority (`seniority`)[]
+- location[]
+- skill (`JobOfferSkill`)[]
+
+JobOfferSkill:
+
+- jobOfferId, name, seniority — PK (jobOfferId, name)
+
+Resume:
+
+- userId (PK)
+- cvFileRef (url)
+
+Application:
+
+- userId, jobOfferId — PK (userId, jobOfferId)
+- resumeId (FK Resume)
+- additionalInfo (markdown)
+- status (`application_status`, default Sent)
+- additionalResponseInfo (markdown?)
+
+Note: a `corporate` user may also hold the `candidate` role and apply to jobs like any candidate.
 
 ## AI Village
 

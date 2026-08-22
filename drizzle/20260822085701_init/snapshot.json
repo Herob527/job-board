@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "0525eff6-00cc-4947-8d24-36bf0724df4b",
+  "id": "7e556adc-b7d8-47f5-bc9e-79a5278efd12",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -15,6 +15,15 @@
         "Rejected"
       ],
       "name": "application_status",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "company_admin",
+        "recruiter"
+      ],
+      "name": "corporate_role",
       "entityType": "enums",
       "schema": "public"
     },
@@ -40,6 +49,16 @@
     },
     {
       "values": [
+        "candidate",
+        "corporate",
+        "platform_admin"
+      ],
+      "name": "role",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
         "Junior",
         "Mid",
         "Senior"
@@ -51,12 +70,6 @@
     {
       "isRlsEnabled": false,
       "name": "Application",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
-      "name": "Candidate",
       "entityType": "tables",
       "schema": "public"
     },
@@ -86,7 +99,7 @@
     },
     {
       "isRlsEnabled": false,
-      "name": "CompanyAdmin",
+      "name": "CorporateMembership",
       "entityType": "tables",
       "schema": "public"
     },
@@ -104,19 +117,13 @@
     },
     {
       "isRlsEnabled": false,
-      "name": "PlatformAdmin",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
-      "name": "Recruiter",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
       "name": "Resume",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "UserRole",
       "entityType": "tables",
       "schema": "public"
     },
@@ -229,45 +236,6 @@
       "entityType": "columns",
       "schema": "public",
       "table": "Application"
-    },
-    {
-      "type": "uuid",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Candidate"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "createdAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Candidate"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updatedAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Candidate"
     },
     {
       "type": "uuid",
@@ -615,10 +583,23 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "id",
+      "name": "userId",
       "entityType": "columns",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
+    },
+    {
+      "type": "role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'corporate'",
+      "generated": null,
+      "identity": null,
+      "name": "role",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "CorporateMembership"
     },
     {
       "type": "uuid",
@@ -631,7 +612,20 @@
       "name": "companyId",
       "entityType": "columns",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
+    },
+    {
+      "type": "corporate_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 1,
+      "default": "'{}'",
+      "generated": null,
+      "identity": null,
+      "name": "subRoles",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "CorporateMembership"
     },
     {
       "type": "timestamp with time zone",
@@ -644,7 +638,7 @@
       "name": "createdAt",
       "entityType": "columns",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
     },
     {
       "type": "timestamp with time zone",
@@ -657,7 +651,7 @@
       "name": "updatedAt",
       "entityType": "columns",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
     },
     {
       "type": "uuid",
@@ -901,97 +895,6 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "PlatformAdmin"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "createdAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "PlatformAdmin"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updatedAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "PlatformAdmin"
-    },
-    {
-      "type": "uuid",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "type": "uuid",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "companyId",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "createdAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updatedAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "type": "uuid",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
       "name": "userId",
       "entityType": "columns",
       "schema": "public",
@@ -1035,6 +938,58 @@
       "entityType": "columns",
       "schema": "public",
       "table": "Resume"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "userId",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "UserRole"
+    },
+    {
+      "type": "role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "role",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "UserRole"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "createdAt",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "UserRole"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updatedAt",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "UserRole"
     },
     {
       "type": "uuid",
@@ -1194,23 +1149,6 @@
     {
       "nameExplicit": false,
       "columns": [
-        "id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "Candidate_id_User_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "Candidate"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
         "userId"
       ],
       "schemaTo": "public",
@@ -1262,7 +1200,7 @@
     {
       "nameExplicit": false,
       "columns": [
-        "id"
+        "userId"
       ],
       "schemaTo": "public",
       "tableTo": "User",
@@ -1271,10 +1209,10 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
-      "name": "CompanyAdmin_id_User_id_fkey",
+      "name": "CorporateMembership_userId_User_id_fkey",
       "entityType": "fks",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
     },
     {
       "nameExplicit": false,
@@ -1288,10 +1226,29 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
-      "name": "CompanyAdmin_companyId_Company_id_fkey",
+      "name": "CorporateMembership_companyId_Company_id_fkey",
       "entityType": "fks",
       "schema": "public",
-      "table": "CompanyAdmin"
+      "table": "CorporateMembership"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userId",
+        "role"
+      ],
+      "schemaTo": "public",
+      "tableTo": "UserRole",
+      "columnsTo": [
+        "userId",
+        "role"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "CorporateMembership_userId_role_UserRole_userId_role_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "CorporateMembership"
     },
     {
       "nameExplicit": false,
@@ -1330,57 +1287,6 @@
     {
       "nameExplicit": false,
       "columns": [
-        "id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "PlatformAdmin_id_User_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "PlatformAdmin"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "Recruiter_id_User_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "companyId"
-      ],
-      "schemaTo": "public",
-      "tableTo": "Company",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "Recruiter_companyId_Company_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "Recruiter"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
         "userId"
       ],
       "schemaTo": "public",
@@ -1394,6 +1300,23 @@
       "entityType": "fks",
       "schema": "public",
       "table": "Resume"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "User",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "UserRole_userId_User_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "UserRole"
     },
     {
       "columns": [
@@ -1419,6 +1342,18 @@
     },
     {
       "columns": [
+        "userId",
+        "role",
+        "companyId"
+      ],
+      "nameExplicit": false,
+      "name": "CorporateMembership_pkey",
+      "entityType": "pks",
+      "schema": "public",
+      "table": "CorporateMembership"
+    },
+    {
+      "columns": [
         "jobOfferId",
         "name"
       ],
@@ -1430,13 +1365,14 @@
     },
     {
       "columns": [
-        "id"
+        "userId",
+        "role"
       ],
       "nameExplicit": false,
-      "name": "Candidate_pkey",
+      "name": "UserRole_pkey",
+      "entityType": "pks",
       "schema": "public",
-      "table": "Candidate",
-      "entityType": "pks"
+      "table": "UserRole"
     },
     {
       "columns": [
@@ -1473,39 +1409,9 @@
         "id"
       ],
       "nameExplicit": false,
-      "name": "CompanyAdmin_pkey",
-      "schema": "public",
-      "table": "CompanyAdmin",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
       "name": "JobOffer_pkey",
       "schema": "public",
       "table": "JobOffer",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "PlatformAdmin_pkey",
-      "schema": "public",
-      "table": "PlatformAdmin",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "Recruiter_pkey",
-      "schema": "public",
-      "table": "Recruiter",
       "entityType": "pks"
     },
     {
@@ -1544,6 +1450,17 @@
     {
       "nameExplicit": false,
       "columns": [
+        "name"
+      ],
+      "nullsNotDistinct": false,
+      "name": "Company_name_key",
+      "schema": "public",
+      "table": "Company",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
         "email"
       ],
       "nullsNotDistinct": false,
@@ -1551,6 +1468,13 @@
       "schema": "public",
       "table": "User",
       "entityType": "uniques"
+    },
+    {
+      "value": "\"minSalary\" < \"maxSalary\"",
+      "name": "salaryCheck",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "JobOffer"
     }
   ],
   "renames": []

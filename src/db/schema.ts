@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
 	check,
 	date,
+	foreignKey,
 	integer,
 	pgEnum,
 	pgTable,
@@ -31,6 +32,16 @@ export const applicationStatusEnum = pgEnum("application_status", [
 	"Hired",
 	"Rejected",
 ]);
+export const corporateRoleEnum = pgEnum("corporate_role", [
+	"company_admin",
+	"recruiter",
+]);
+
+export const roleEnum = pgEnum("role", [
+	"candidate",
+	"corporate",
+	"platform_admin",
+]);
 
 const stringSizes = {
 	short: 255,
@@ -54,12 +65,17 @@ export const users = pgTable("User", {
 	...timestamps,
 });
 
-export const candidate = pgTable("Candidate", {
-	id: uuid()
-		.primaryKey()
-		.references(() => users.id),
-	...timestamps,
-});
+export const userRoles = pgTable(
+	"UserRole",
+	{
+		userId: uuid()
+			.references(() => users.id)
+			.notNull(),
+		role: roleEnum().notNull(),
+		...timestamps,
+	},
+	(t) => [primaryKey({ columns: [t.userId, t.role] })],
+);
 
 export const candidateSkill = pgTable(
 	"CandidateSkill",
@@ -111,32 +127,30 @@ export const company = pgTable("Company", {
 	...timestamps,
 });
 
-export const recruiter = pgTable("Recruiter", {
-	id: uuid()
-		.primaryKey()
-		.references(() => users.id),
-	companyId: uuid()
-		.references(() => company.id)
-		.notNull(),
-	...timestamps,
-});
-
-export const companyAdmin = pgTable("CompanyAdmin", {
-	id: uuid()
-		.primaryKey()
-		.references(() => users.id),
-	companyId: uuid()
-		.references(() => company.id)
-		.notNull(),
-	...timestamps,
-});
-
-export const platformAdmin = pgTable("PlatformAdmin", {
-	id: uuid()
-		.primaryKey()
-		.references(() => users.id),
-	...timestamps,
-});
+export const corporateMembership = pgTable(
+	"CorporateMembership",
+	{
+		userId: uuid()
+			.references(() => users.id)
+			.notNull(),
+		role: roleEnum().notNull().default("corporate"),
+		companyId: uuid()
+			.references(() => company.id)
+			.notNull(),
+		subRoles: corporateRoleEnum()
+			.array()
+			.notNull()
+			.default(sql`'{}'::corporate_role[]`),
+		...timestamps,
+	},
+	(t) => [
+		primaryKey({ columns: [t.userId, t.role, t.companyId] }),
+		foreignKey({
+			columns: [t.userId, t.role],
+			foreignColumns: [userRoles.userId, userRoles.role],
+		}).onDelete("cascade"),
+	],
+);
 
 export const jobOffer = pgTable(
 	"JobOffer",
