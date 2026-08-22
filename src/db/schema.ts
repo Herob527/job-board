@@ -61,10 +61,7 @@ export const users = pgTable("User", {
 	country: varchar("country", { length: stringSizes.short }),
 	email: varchar("email", { length: stringSizes.short }).notNull().unique(),
 	password: varchar("password", { length: stringSizes.short }).notNull(),
-	roles: roleEnum()
-		.array()
-		.notNull()
-		.default(sql`'{}'::role[]`),
+	roles: roleEnum().array().notNull().default(sql`'{}'::role[]`),
 	...timestamps,
 });
 
