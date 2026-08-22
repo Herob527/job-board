@@ -1,9 +1,15 @@
-import { useForm, useSelector } from "@tanstack/preact-form";
+import { useForm } from "@tanstack/preact-form";
 import z from "zod";
 
 const loginSchema = z.object({
-	email: z.email().min(5).max(40),
-	password: z.string().min(5).max(20),
+	email: z
+		.email()
+		.min(5, { message: "Email must be at least 5 characters long" })
+		.max(40, { message: "Email can be at most 40 characters long" }),
+	password: z
+		.string()
+		.min(8, { message: "Password must be at least 8 characters long" })
+		.max(40, { message: "Password can be at most 40 characters long" }),
 });
 
 const LoginForm = () => {
@@ -17,15 +23,13 @@ const LoginForm = () => {
 			console.error(data);
 		},
 	});
-	const email = useSelector(formHandler.store, (state) => state.values.email);
-	console.log(email);
 	return (
 		<form
 			onSubmit={(ev) => {
 				ev.preventDefault();
 				formHandler.handleSubmit();
 			}}
-			class="inline-flex flex-col gap-2"
+			class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
 		>
 			<formHandler.Field
 				name="email"
@@ -34,13 +38,21 @@ const LoginForm = () => {
 						<span>E-mail</span>
 						<input
 							type="email"
+							name={field.name}
 							value={field.state.value}
 							onBlur={field.handleBlur}
-							class="border border-amber-400"
+							class="border border-amber-400 px-4 py-2 rounded-sm"
 							onInput={(e) =>
 								field.handleChange((e.target as HTMLInputElement).value)
 							}
 						/>
+						{field.state.meta.errors.length > 0 && (
+							<div class="flex flex-col gap-1">
+								{field.state.meta.errors.map((it) => (
+									<span>{it?.message}</span>
+								))}
+							</div>
+						)}
 					</>
 				)}
 			/>
@@ -52,18 +64,29 @@ const LoginForm = () => {
 						<span>Password</span>
 						<input
 							type="password"
+							name={field.name}
 							value={field.state.value}
 							onBlur={field.handleBlur}
-							class="border border-amber-400"
+							class="border border-amber-400 px-4 py-2 rounded-sm"
 							onInput={(e) =>
 								field.handleChange((e.target as HTMLInputElement).value)
 							}
 						/>
+
+						{field.state.meta.errors.length > 0 && (
+							<div class="flex flex-col gap-1">
+								{field.state.meta.errors.map((it) => (
+									<span>{it?.message}</span>
+								))}
+							</div>
+						)}
 					</>
 				)}
 			/>
 
-			<button type="submit">Login</button>
+			<button type="submit" class="bg-amber-300 px-4 py-2 rounded-sm">
+				Login
+			</button>
 		</form>
 	);
 };
