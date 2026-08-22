@@ -58,12 +58,11 @@ CREATE TABLE "Company" (
 --> statement-breakpoint
 CREATE TABLE "CorporateMembership" (
 	"userId" uuid,
-	"role" "role" DEFAULT 'corporate'::"role",
 	"companyId" uuid,
 	"subRoles" "corporate_role"[] DEFAULT '{}'::"corporate_role"[] NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "CorporateMembership_pkey" PRIMARY KEY("userId","role","companyId")
+	CONSTRAINT "CorporateMembership_pkey" PRIMARY KEY("userId","companyId")
 );
 --> statement-breakpoint
 CREATE TABLE "JobOffer" (
@@ -99,14 +98,6 @@ CREATE TABLE "Resume" (
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "UserRole" (
-	"userId" uuid,
-	"role" "role",
-	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "UserRole_pkey" PRIMARY KEY("userId","role")
-);
---> statement-breakpoint
 CREATE TABLE "User" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7(),
 	"name" varchar(255) NOT NULL,
@@ -114,6 +105,7 @@ CREATE TABLE "User" (
 	"country" varchar(255),
 	"email" varchar(255) NOT NULL UNIQUE,
 	"password" varchar(255) NOT NULL,
+	"roles" "role"[] DEFAULT '{}'::"role"[] NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -126,8 +118,6 @@ ALTER TABLE "CandidateProject" ADD CONSTRAINT "CandidateProject_userId_User_id_f
 ALTER TABLE "CandidateSkill" ADD CONSTRAINT "CandidateSkill_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "CorporateMembership" ADD CONSTRAINT "CorporateMembership_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
 ALTER TABLE "CorporateMembership" ADD CONSTRAINT "CorporateMembership_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");--> statement-breakpoint
-ALTER TABLE "CorporateMembership" ADD CONSTRAINT "CorporateMembership_userId_role_UserRole_userId_role_fkey" FOREIGN KEY ("userId","role") REFERENCES "UserRole"("userId","role") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "JobOffer" ADD CONSTRAINT "JobOffer_companyId_Company_id_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id");--> statement-breakpoint
 ALTER TABLE "JobOfferSkill" ADD CONSTRAINT "JobOfferSkill_jobOfferId_JobOffer_id_fkey" FOREIGN KEY ("jobOfferId") REFERENCES "JobOffer"("id");--> statement-breakpoint
-ALTER TABLE "Resume" ADD CONSTRAINT "Resume_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");--> statement-breakpoint
-ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");
+ALTER TABLE "Resume" ADD CONSTRAINT "Resume_userId_User_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id");

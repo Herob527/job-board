@@ -2,7 +2,6 @@ import { sql } from "drizzle-orm";
 import {
 	check,
 	date,
-	foreignKey,
 	integer,
 	pgEnum,
 	pgTable,
@@ -62,20 +61,12 @@ export const users = pgTable("User", {
 	country: varchar("country", { length: stringSizes.short }),
 	email: varchar("email", { length: stringSizes.short }).notNull().unique(),
 	password: varchar("password", { length: stringSizes.short }).notNull(),
+	roles: roleEnum()
+		.array()
+		.notNull()
+		.default(sql`'{}'::role[]`),
 	...timestamps,
 });
-
-export const userRoles = pgTable(
-	"UserRole",
-	{
-		userId: uuid()
-			.references(() => users.id)
-			.notNull(),
-		role: roleEnum().notNull(),
-		...timestamps,
-	},
-	(t) => [primaryKey({ columns: [t.userId, t.role] })],
-);
 
 export const candidateSkill = pgTable(
 	"CandidateSkill",
@@ -133,7 +124,6 @@ export const corporateMembership = pgTable(
 		userId: uuid()
 			.references(() => users.id)
 			.notNull(),
-		role: roleEnum().notNull().default("corporate"),
 		companyId: uuid()
 			.references(() => company.id)
 			.notNull(),
@@ -143,13 +133,7 @@ export const corporateMembership = pgTable(
 			.default(sql`'{}'::corporate_role[]`),
 		...timestamps,
 	},
-	(t) => [
-		primaryKey({ columns: [t.userId, t.role, t.companyId] }),
-		foreignKey({
-			columns: [t.userId, t.role],
-			foreignColumns: [userRoles.userId, userRoles.role],
-		}).onDelete("cascade"),
-	],
+	(t) => [primaryKey({ columns: [t.userId, t.companyId] })],
 );
 
 export const jobOffer = pgTable(

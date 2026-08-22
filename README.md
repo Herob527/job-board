@@ -45,13 +45,14 @@ User:
 - email (unique)
 - password
 - country?
+- roles (`role`[], default {})
 
-Roles — a user may hold several roles; each is a row in `UserRole`:
+Roles — stored as an enum array on `User`:
 
-- `UserRole`: userId, role (`candidate` | `corporate` | `platform_admin`) — PK (userId, role)
+- `User.roles`: `role`[] (`candidate` | `corporate` | `platform_admin`), default `{}`
 - A `corporate` user can belong to multiple companies via `CorporateMembership`:
-  - userId, role (constant `corporate`), companyId, subRoles (`corporate_role`[]) — PK (userId, role, companyId)
-  - FK (userId, role) → `UserRole` (ON DELETE CASCADE): a membership can only exist if the `corporate` role row exists
+  - userId, companyId, subRoles (`corporate_role`[]) — PK (userId, companyId)
+  - App-enforced: a membership is only created when the user's `roles` contains `corporate`
 
 Candidate data (a user with the `candidate` role):
 

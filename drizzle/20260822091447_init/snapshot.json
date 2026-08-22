@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "7e556adc-b7d8-47f5-bc9e-79a5278efd12",
+  "id": "9f54d42d-52c0-4d11-8c18-55cea1e11158",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -118,12 +118,6 @@
     {
       "isRlsEnabled": false,
       "name": "Resume",
-      "entityType": "tables",
-      "schema": "public"
-    },
-    {
-      "isRlsEnabled": false,
-      "name": "UserRole",
       "entityType": "tables",
       "schema": "public"
     },
@@ -589,19 +583,6 @@
       "table": "CorporateMembership"
     },
     {
-      "type": "role",
-      "typeSchema": "public",
-      "notNull": true,
-      "dimensions": 0,
-      "default": "'corporate'",
-      "generated": null,
-      "identity": null,
-      "name": "role",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "CorporateMembership"
-    },
-    {
       "type": "uuid",
       "typeSchema": null,
       "notNull": true,
@@ -944,58 +925,6 @@
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "userId",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "UserRole"
-    },
-    {
-      "type": "role",
-      "typeSchema": "public",
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "role",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "UserRole"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "createdAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "UserRole"
-    },
-    {
-      "type": "timestamp with time zone",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "now()",
-      "generated": null,
-      "identity": null,
-      "name": "updatedAt",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "UserRole"
-    },
-    {
-      "type": "uuid",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
       "default": "uuidv7()",
       "generated": null,
       "identity": null,
@@ -1065,6 +994,19 @@
       "generated": null,
       "identity": null,
       "name": "password",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "User"
+    },
+    {
+      "type": "role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 1,
+      "default": "'{}'",
+      "generated": null,
+      "identity": null,
+      "name": "roles",
       "entityType": "columns",
       "schema": "public",
       "table": "User"
@@ -1234,25 +1176,6 @@
     {
       "nameExplicit": false,
       "columns": [
-        "userId",
-        "role"
-      ],
-      "schemaTo": "public",
-      "tableTo": "UserRole",
-      "columnsTo": [
-        "userId",
-        "role"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "CASCADE",
-      "name": "CorporateMembership_userId_role_UserRole_userId_role_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "CorporateMembership"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
         "companyId"
       ],
       "schemaTo": "public",
@@ -1302,23 +1225,6 @@
       "table": "Resume"
     },
     {
-      "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
-      "schemaTo": "public",
-      "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "UserRole_userId_User_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "UserRole"
-    },
-    {
       "columns": [
         "userId",
         "jobOfferId"
@@ -1343,7 +1249,6 @@
     {
       "columns": [
         "userId",
-        "role",
         "companyId"
       ],
       "nameExplicit": false,
@@ -1362,17 +1267,6 @@
       "entityType": "pks",
       "schema": "public",
       "table": "JobOfferSkill"
-    },
-    {
-      "columns": [
-        "userId",
-        "role"
-      ],
-      "nameExplicit": false,
-      "name": "UserRole_pkey",
-      "entityType": "pks",
-      "schema": "public",
-      "table": "UserRole"
     },
     {
       "columns": [
