@@ -1,7 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { users } from "../../db/schema";
 import { eq } from "drizzle-orm";
+import { users } from "../../db/schema";
 
 export default defineAction({
 	accept: "form",
