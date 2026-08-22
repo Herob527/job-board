@@ -1,14 +1,10 @@
 ---
-import { actions } from "astro:actions";
-import Layout from "../layouts/Layout.astro";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "#/features/auth/LoginForm";
+import Layout from "#/layouts/Layout.astro";
 
 const test = () => {
 	const t2 = "";
 };
-
-const login = await Astro.session?.get("login");
-console.log(login);
 ---
 
 <Layout>
