@@ -1,5 +1,6 @@
 import { useForm } from "@tanstack/preact-form";
 import { loginSchema } from "./schema";
+import CustomField from "../form/Field";
 
 const LoginForm = () => {
 	const formHandler = useForm({
@@ -20,57 +21,18 @@ const LoginForm = () => {
 			}}
 			class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
 		>
-			<formHandler.Field
+			<CustomField
+				formHandler={formHandler}
 				name="email"
-				children={(field) => (
-					<>
-						<span>E-mail</span>
-						<input
-							type="email"
-							name={field.name}
-							value={field.state.value}
-							onBlur={field.handleBlur}
-							class="border border-amber-400 px-4 py-2 rounded-sm"
-							onInput={(e) =>
-								field.handleChange((e.target as HTMLInputElement).value)
-							}
-						/>
-						{field.state.meta.errors.length > 0 && (
-							<div class="flex flex-col gap-1">
-								{field.state.meta.errors.map((it) => (
-									<span>{it?.message}</span>
-								))}
-							</div>
-						)}
-					</>
-				)}
+				label="E-mail"
+				type="email"
 			/>
 
-			<formHandler.Field
+			<CustomField
+				formHandler={formHandler}
 				name="password"
-				children={(field) => (
-					<>
-						<span>Password</span>
-						<input
-							type="password"
-							name={field.name}
-							value={field.state.value}
-							onBlur={field.handleBlur}
-							class="border border-amber-400 px-4 py-2 rounded-sm"
-							onInput={(e) =>
-								field.handleChange((e.target as HTMLInputElement).value)
-							}
-						/>
-
-						{field.state.meta.errors.length > 0 && (
-							<div class="flex flex-col gap-1">
-								{field.state.meta.errors.map((it) => (
-									<span>{it?.message}</span>
-								))}
-							</div>
-						)}
-					</>
-				)}
+				label="Password"
+				type="password"
 			/>
 
 			<button type="submit" class="bg-amber-300 px-4 py-2 rounded-sm">
