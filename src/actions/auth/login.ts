@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 import { users } from "../../db/schema";
 
 export default defineAction({
-	accept: "form",
 	input: z.object({
 		email: z.email(),
 		password: z.string(),
