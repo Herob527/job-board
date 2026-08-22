@@ -29,7 +29,6 @@ const baseRegisterSchema = loginSchema.extend({
 		.string()
 		.min(8, { message: "Password must be at least 8 characters long" })
 		.max(40, { message: "Password can be at most 40 characters long" }),
-	registerAs: z.enum(["candidate", "corporate"]),
 });
 
 export const registerSchema = z
@@ -49,4 +48,7 @@ export const registerSchema = z
 				.min(1, { message: "Location must be at least 1 location" }),
 		}),
 	])
-	.refine((form) => form.password === form.confirmPassword);
+	.refine((form) => form.password === form.confirmPassword, {
+		error: "Passwords do not match",
+		path: ["confirmPassword"],
+	});
