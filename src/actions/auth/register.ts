@@ -16,7 +16,7 @@ export default defineAction({
     }
     const hashedPassword = await bcrypt.hash(input.password, 10);
 
-    const user = await db.insert(users).values({
+    await db.insert(users).values({
       email: input.email,
       name: input.name,
       surname: input.surname,
