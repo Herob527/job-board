@@ -1,6 +1,7 @@
 import { useForm } from "@tanstack/preact-form";
 import { registerSchema } from "./schema";
 import type z from "zod";
+import withQuery from "../common/withQuery";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -27,4 +28,4 @@ const RegisterForm = () => {
 	);
 };
 
-export default RegisterForm;
+export default withQuery(RegisterForm);
