@@ -165,6 +165,13 @@ const RegisterForm = () => {
 					)}
 				</formHandler.Field>
 			)}
+			<button
+				type="submit"
+				class="border border-amber-400 hover:bg-amber-400 hover:text-white px-4 py-2 rounded-l-sm min-w-40 flex-1"
+			>
+				{" "}
+				Register
+			</button>
 		</form>
 	);
 };

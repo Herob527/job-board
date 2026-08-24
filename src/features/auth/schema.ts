@@ -37,9 +37,15 @@ export const registerSchema = z
 				.string()
 				.min(3, { message: "Company name must be at least 3 characters long" })
 				.max(40, { message: "Company name can be at most 40 characters long" }),
-			locations: z.string().array().min(1, {
-				error: "At least one location is required",
-			}),
+			locations: z
+				.string()
+				.min(3)
+				.max(100)
+				.array()
+				.min(1, {
+					error: "At least one location is required",
+				})
+				.max(7),
 		}),
 	])
 	.refine((form) => form.password === form.confirmPassword, {
