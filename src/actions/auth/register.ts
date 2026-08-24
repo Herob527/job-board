@@ -1,14 +1,9 @@
 import { defineAction } from "astro:actions";
-import { z } from "astro/zod";
+import { registerSchema } from "#/features/auth/schema";
 
 export default defineAction({
-	input: z.object({
-		name: z.string(),
-		surname: z.string(),
-		country: z.string(),
-		email: z.email(),
-		password: z.string(),
-		confirmPassword: z.string(),
-	}),
-	handler: (input, context) => {},
+	input: registerSchema,
+	handler: (input, context) => {
+		console.log(input);
+	},
 });
