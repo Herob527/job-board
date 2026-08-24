@@ -4,10 +4,14 @@ import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { registerSchema } from "./schema";
+import { useMutation } from "@tanstack/preact-query";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
+  const { mutate } = useMutation({
+    mutationFn: (data: RegisterFormData) => actions.register(data),
+  });
   const formHandler = useForm({
     defaultValues: {
       registerAs: "candidate",
@@ -19,10 +23,10 @@ const RegisterForm = () => {
     }),
     onSubmit: (data) => {
       console.log(data.value);
-      actions.register(data.value);
+      mutate(data.value);
     },
     onSubmitInvalid: (data) => {
-      console.error(data);
+      console.error(data.formApi.getAllErrors());
     },
   });
   const formMode = useSelector(
@@ -67,7 +71,7 @@ const RegisterForm = () => {
       <CustomField
         formHandler={formHandler}
         name="email"
-        label="E-mail"
+        label={formMode === "candidate" ? "E-mail" : "Owner e-mail"}
         type="email"
       />
 
@@ -149,7 +153,7 @@ const RegisterForm = () => {
                   )}
                 </formHandler.Field>
               ))}
-              {field.state.value.length < 7 && (
+              {(field.state.value ?? []).length < 7 && (
                 <button
                   type="button"
                   class="border border-amber-400 hover:bg-amber-400 hover:text-white px-4 py-2 rounded-l-sm min-w-40 flex-1"
