@@ -1,9 +1,9 @@
+import { actions } from "astro:actions";
 import { revalidateLogic, useForm, useSelector } from "@tanstack/preact-form";
-import { registerSchema } from "./schema";
 import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
-import { useState } from "preact/hooks";
+import { registerSchema } from "./schema";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -19,6 +19,7 @@ const RegisterForm = () => {
 		}),
 		onSubmit: (data) => {
 			console.log(data.value);
+			actions.register(data.value);
 		},
 		onSubmitInvalid: (data) => {
 			console.error(data);
