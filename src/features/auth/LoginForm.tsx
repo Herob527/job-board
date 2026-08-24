@@ -1,10 +1,10 @@
-import { revalidateLogic, useForm } from "@tanstack/preact-form";
-import { loginSchema } from "./schema";
-import CustomField from "../form/Field";
 import { actions } from "astro:actions";
+import { revalidateLogic, useForm } from "@tanstack/preact-form";
 import { useMutation } from "@tanstack/preact-query";
 import type z from "zod";
 import withQuery from "../common/withQuery";
+import CustomField from "../form/Field";
+import { loginSchema } from "./schema";
 
 const LoginForm = () => {
 	const { mutate } = useMutation({
