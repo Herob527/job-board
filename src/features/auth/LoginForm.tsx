@@ -1,4 +1,4 @@
-import { useForm } from "@tanstack/preact-form";
+import { revalidateLogic, useForm } from "@tanstack/preact-form";
 import { loginSchema } from "./schema";
 import CustomField from "../form/Field";
 import { actions } from "astro:actions";
@@ -13,6 +13,10 @@ const LoginForm = () => {
 	const formHandler = useForm({
 		defaultValues: { email: "", password: "" },
 		validators: { onChange: loginSchema },
+		validationLogic: revalidateLogic({
+			modeAfterSubmission: "change",
+			mode: "submit",
+		}),
 		onSubmit: (data) => mutate(data.value),
 		onSubmitInvalid: (data) => {
 			console.error(data);

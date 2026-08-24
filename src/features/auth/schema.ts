@@ -12,19 +12,6 @@ export const loginSchema = z.object({
 });
 
 const baseRegisterSchema = loginSchema.extend({
-	name: z
-		.string()
-		.min(3, { message: "Name must be at least 3 characters long" })
-		.max(40, { message: "Name can be at most 40 characters long" }),
-	surname: z
-		.string()
-		.min(3, { message: "Surname must be at least 3 characters long" })
-		.max(40, { message: "Surname can be at most 40 characters long" }),
-	country: z
-		.string()
-		.min(3, { message: "Country must be at least 3 characters long" })
-		.max(40, { message: "Country can be at most 40 characters long" })
-		.nullable(),
 	confirmPassword: z
 		.string()
 		.min(8, { message: "Password must be at least 8 characters long" })
@@ -34,18 +21,25 @@ const baseRegisterSchema = loginSchema.extend({
 export const registerSchema = z
 	.discriminatedUnion("registerAs", [
 		baseRegisterSchema.extend({
+			name: z
+				.string()
+				.min(3, { message: "Name must be at least 3 characters long" })
+				.max(40, { message: "Name can be at most 40 characters long" }),
+			surname: z
+				.string()
+				.min(3, { message: "Surname must be at least 3 characters long" })
+				.max(40, { message: "Surname can be at most 40 characters long" }),
 			registerAs: z.literal("candidate"),
 		}),
 		baseRegisterSchema.extend({
-			registerAs: z.literal("corporate"),
+			registerAs: z.literal("company"),
 			companyName: z
 				.string()
 				.min(3, { message: "Company name must be at least 3 characters long" })
 				.max(40, { message: "Company name can be at most 40 characters long" }),
-			location: z
-				.string()
-				.array()
-				.min(1, { message: "Location must be at least 1 location" }),
+			locations: z.string().array().min(1, {
+				error: "At least one location is required",
+			}),
 		}),
 	])
 	.refine((form) => form.password === form.confirmPassword, {
