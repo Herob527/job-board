@@ -2,27 +2,18 @@ import { useForm } from "@tanstack/preact-form";
 import { loginSchema } from "./schema";
 import CustomField from "../form/Field";
 import { actions } from "astro:actions";
-import { useState } from "preact/hooks";
-import {
-	QueryClient,
-	QueryClientProvider,
-	useMutation,
-} from "@tanstack/preact-query";
+import { useMutation } from "@tanstack/preact-query";
 import type z from "zod";
 import withQuery from "../common/withQuery";
 
 const LoginForm = () => {
-	const { isPending, error, isIdle, mutate } = useMutation({
+	const { mutate } = useMutation({
 		mutationFn: (data: z.infer<typeof loginSchema>) => actions.login(data),
 	});
 	const formHandler = useForm({
 		defaultValues: { email: "", password: "" },
 		validators: { onChange: loginSchema },
-		onSubmit: async (data) => {
-			try {
-				mutate(data.value);
-			} catch {}
-		},
+		onSubmit: (data) => mutate(data.value),
 		onSubmitInvalid: (data) => {
 			console.error(data);
 		},
