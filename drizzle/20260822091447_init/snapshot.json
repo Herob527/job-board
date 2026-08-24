@@ -2,67 +2,40 @@
   "version": "8",
   "dialect": "postgres",
   "id": "9f54d42d-52c0-4d11-8c18-55cea1e11158",
-  "prevIds": [
-    "00000000-0000-0000-0000-000000000000"
-  ],
+  "prevIds": ["00000000-0000-0000-0000-000000000000"],
   "ddl": [
     {
-      "values": [
-        "Sent",
-        "Seen",
-        "Interested",
-        "Hired",
-        "Rejected"
-      ],
+      "values": ["Sent", "Seen", "Interested", "Hired", "Rejected"],
       "name": "application_status",
       "entityType": "enums",
       "schema": "public"
     },
     {
-      "values": [
-        "company_admin",
-        "recruiter"
-      ],
+      "values": ["company_admin", "recruiter"],
       "name": "corporate_role",
       "entityType": "enums",
       "schema": "public"
     },
     {
-      "values": [
-        "Employment Contact",
-        "B2B",
-        "Mandate"
-      ],
+      "values": ["Employment Contact", "B2B", "Mandate"],
       "name": "employment_type",
       "entityType": "enums",
       "schema": "public"
     },
     {
-      "values": [
-        "Office",
-        "Hybrid",
-        "Remote"
-      ],
+      "values": ["Office", "Hybrid", "Remote"],
       "name": "remote_type",
       "entityType": "enums",
       "schema": "public"
     },
     {
-      "values": [
-        "candidate",
-        "corporate",
-        "platform_admin"
-      ],
+      "values": ["candidate", "corporate", "platform_admin"],
       "name": "role",
       "entityType": "enums",
       "schema": "public"
     },
     {
-      "values": [
-        "Junior",
-        "Mid",
-        "Senior"
-      ],
+      "values": ["Junior", "Mid", "Senior"],
       "name": "seniority",
       "entityType": "enums",
       "schema": "public"
@@ -1039,14 +1012,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "Application_userId_User_id_fkey",
@@ -1056,14 +1025,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "jobOfferId"
-      ],
+      "columns": ["jobOfferId"],
       "schemaTo": "public",
       "tableTo": "JobOffer",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "Application_jobOfferId_JobOffer_id_fkey",
@@ -1073,14 +1038,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "resumeId"
-      ],
+      "columns": ["resumeId"],
       "schemaTo": "public",
       "tableTo": "Resume",
-      "columnsTo": [
-        "userId"
-      ],
+      "columnsTo": ["userId"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "Application_resumeId_Resume_userId_fkey",
@@ -1090,14 +1051,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "CandidateExperience_userId_User_id_fkey",
@@ -1107,14 +1064,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "CandidateProject_userId_User_id_fkey",
@@ -1124,14 +1077,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "CandidateSkill_userId_User_id_fkey",
@@ -1141,14 +1090,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "CorporateMembership_userId_User_id_fkey",
@@ -1158,14 +1103,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "companyId"
-      ],
+      "columns": ["companyId"],
       "schemaTo": "public",
       "tableTo": "Company",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "CorporateMembership_companyId_Company_id_fkey",
@@ -1175,14 +1116,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "companyId"
-      ],
+      "columns": ["companyId"],
       "schemaTo": "public",
       "tableTo": "Company",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "JobOffer_companyId_Company_id_fkey",
@@ -1192,14 +1129,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "jobOfferId"
-      ],
+      "columns": ["jobOfferId"],
       "schemaTo": "public",
       "tableTo": "JobOffer",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "JobOfferSkill_jobOfferId_JobOffer_id_fkey",
@@ -1209,14 +1142,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "schemaTo": "public",
       "tableTo": "User",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "Resume_userId_User_id_fkey",
@@ -1225,10 +1154,7 @@
       "table": "Resume"
     },
     {
-      "columns": [
-        "userId",
-        "jobOfferId"
-      ],
+      "columns": ["userId", "jobOfferId"],
       "nameExplicit": false,
       "name": "Application_pkey",
       "entityType": "pks",
@@ -1236,10 +1162,7 @@
       "table": "Application"
     },
     {
-      "columns": [
-        "userId",
-        "name"
-      ],
+      "columns": ["userId", "name"],
       "nameExplicit": false,
       "name": "CandidateSkill_pkey",
       "entityType": "pks",
@@ -1247,10 +1170,7 @@
       "table": "CandidateSkill"
     },
     {
-      "columns": [
-        "userId",
-        "companyId"
-      ],
+      "columns": ["userId", "companyId"],
       "nameExplicit": false,
       "name": "CorporateMembership_pkey",
       "entityType": "pks",
@@ -1258,10 +1178,7 @@
       "table": "CorporateMembership"
     },
     {
-      "columns": [
-        "jobOfferId",
-        "name"
-      ],
+      "columns": ["jobOfferId", "name"],
       "nameExplicit": false,
       "name": "JobOfferSkill_pkey",
       "entityType": "pks",
@@ -1269,9 +1186,7 @@
       "table": "JobOfferSkill"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "CandidateExperience_pkey",
       "schema": "public",
@@ -1279,9 +1194,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "CandidateProject_pkey",
       "schema": "public",
@@ -1289,9 +1202,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "Company_pkey",
       "schema": "public",
@@ -1299,9 +1210,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "JobOffer_pkey",
       "schema": "public",
@@ -1309,9 +1218,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "userId"
-      ],
+      "columns": ["userId"],
       "nameExplicit": false,
       "name": "Resume_pkey",
       "schema": "public",
@@ -1319,9 +1226,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "User_pkey",
       "schema": "public",
@@ -1330,11 +1235,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "userId",
-        "company_name",
-        "startDate"
-      ],
+      "columns": ["userId", "company_name", "startDate"],
       "nullsNotDistinct": false,
       "name": "CandidateExperience_userId_company_name_startDate_unique",
       "entityType": "uniques",
@@ -1343,9 +1244,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "name"
-      ],
+      "columns": ["name"],
       "nullsNotDistinct": false,
       "name": "Company_name_key",
       "schema": "public",
@@ -1354,9 +1253,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "email"
-      ],
+      "columns": ["email"],
       "nullsNotDistinct": false,
       "name": "User_email_key",
       "schema": "public",

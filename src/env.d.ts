@@ -3,9 +3,9 @@
 import type { drizzle } from "drizzle-orm/node-postgres";
 
 declare global {
-	declare namespace App {
-		interface Locals {
-			db: ReturnType<typeof drizzle>;
-		}
-	}
+  declare namespace App {
+    interface Locals {
+      db: ReturnType<typeof drizzle>;
+    }
+  }
 }

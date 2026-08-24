@@ -12,8 +12,8 @@ export default defineConfig({
   output: "server",
 
   adapter: node({
-      mode: "standalone",
-    }),
+    mode: "standalone",
+  }),
 
   vite: {
     plugins: [tailwindcss()],
