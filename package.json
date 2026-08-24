@@ -10,6 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --fix",
     "db:apply": "drizzle-kit push",
     "db:migration:generate": "drizzle-kit generate",
     "db:migration:run": "drizzle-kit migrate"
