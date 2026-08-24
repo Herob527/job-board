@@ -1,6 +1,6 @@
 import { ActionError, defineAction } from "astro:actions";
 import { eq } from "drizzle-orm";
-import { loginSchema } from "#/features/auth/schema";
+import { baseLoginSchema, loginSchema } from "#/features/auth/schema";
 import { users } from "../../db/schema";
 import bcrypt from "bcrypt";
 

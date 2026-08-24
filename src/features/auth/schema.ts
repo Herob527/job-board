@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const loginSchema = z.object({
+export const baseLoginSchema = z.object({
   email: z
     .email()
     .min(5, { message: "Email must be at least 5 characters long" })
@@ -11,7 +11,11 @@ export const loginSchema = z.object({
     .max(40, { message: "Password can be at most 40 characters long" }),
 });
 
-const baseRegisterSchema = loginSchema.extend({
+export const loginSchema = baseLoginSchema.extend({
+  rememberMe: z.boolean().default(false),
+});
+
+const baseRegisterSchema = baseLoginSchema.extend({
   confirmPassword: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })

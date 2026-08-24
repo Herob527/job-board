@@ -6,12 +6,18 @@ import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { loginSchema } from "./schema";
 
+type LoginFormData = z.infer<typeof loginSchema>;
+
 const LoginForm = () => {
   const { mutate } = useMutation({
-    mutationFn: (data: z.infer<typeof loginSchema>) => actions.login(data),
+    mutationFn: (data: LoginFormData) => actions.login(data),
   });
   const formHandler = useForm({
-    defaultValues: { email: "", password: "" },
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
     validators: { onChange: loginSchema },
     validationLogic: revalidateLogic({
       modeAfterSubmission: "change",
@@ -42,6 +48,21 @@ const LoginForm = () => {
         name="password"
         label="Password"
         type="password"
+      />
+
+      <formHandler.Field
+        name="rememberMe"
+        children={(field) => (
+          <div class="flex flex-row gap-1 items-center">
+            <span>Remember me</span>
+            <input
+              type="checkbox"
+              name={field.name}
+              checked={field.state.value}
+              onInput={(e) => field.handleChange(e.currentTarget.checked)}
+            />
+          </div>
+        )}
       />
 
       <button type="submit" class="bg-amber-300 px-4 py-2 rounded-sm">

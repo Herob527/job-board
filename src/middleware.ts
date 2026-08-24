@@ -13,4 +13,11 @@ const initDb = defineMiddleware((context, next) => {
   return next();
 });
 
-export const onRequest = sequence(initDb);
+const loginCheck = defineMiddleware(async (context, next) => {
+  const s = await context.session?.get("user");
+  const c = context.cookies.get("user")?.value;
+  console.log({ s, c });
+  return next();
+});
+
+export const onRequest = sequence(initDb, loginCheck);
