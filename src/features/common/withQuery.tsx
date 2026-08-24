@@ -3,12 +3,10 @@ import type { FunctionComponent } from "preact";
 
 const queryClient = new QueryClient();
 
-const withQuery = (Component: FunctionComponent) => () => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<Component />
-		</QueryClientProvider>
-	);
-};
+const withQuery = (Component: FunctionComponent) => () => (
+	<QueryClientProvider client={queryClient}>
+		<Component />
+	</QueryClientProvider>
+);
 
 export default withQuery;
