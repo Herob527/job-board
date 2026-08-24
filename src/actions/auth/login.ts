@@ -1,13 +1,10 @@
 import { ActionError, defineAction } from "astro:actions";
-import { z } from "astro/zod";
 import { eq } from "drizzle-orm";
+import { loginSchema } from "#/features/auth/schema";
 import { users } from "../../db/schema";
 
 export default defineAction({
-	input: z.object({
-		email: z.email(),
-		password: z.string(),
-	}),
+	input: loginSchema,
 	handler: async (input, context) => {
 		try {
 			const { db } = context.locals;
