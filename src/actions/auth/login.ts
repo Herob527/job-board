@@ -14,11 +14,17 @@ export default defineAction({
         .from(users)
         .where(eq(users.email, input.email))
         .limit(1);
+      if (user.length === 0) {
+        throw new ActionError({
+          code: "NOT_FOUND",
+          message: "User not found or password is incorrect",
+        });
+      }
       const passwordMatch = await bcrypt.compare(
         input.password,
         user[0].password,
       );
-      if (user.length === 0 || !passwordMatch) {
+      if (!passwordMatch) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "User not found or password is incorrect",
