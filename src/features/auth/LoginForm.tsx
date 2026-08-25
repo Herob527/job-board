@@ -12,10 +12,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginForm = () => {
   const { mutate } = useMutation({
     mutationFn: (data: LoginFormData) => actions.login(data),
-    onSuccess: ({ data }) => {
-      cookieStore.set("user", JSON.stringify(data));
-      loginSignal.value = data;
-    },
+    onSuccess: ({ data }) => {},
   });
   const formHandler = useForm({
     defaultValues: {

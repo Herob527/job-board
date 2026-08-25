@@ -10,9 +10,7 @@ export default defineAction({
     try {
       const { db } = context.locals;
       const user = await db
-        .select({
-          password: users.password,
-        })
+        .select()
         .from(users)
         .where(eq(users.email, input.email))
         .limit(1);

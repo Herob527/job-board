@@ -1,4 +1,5 @@
 ---
+import TopBar from "#/features/common/TopBar";
 import "../styles/global.css";
 ---
 
@@ -21,6 +22,11 @@ import "../styles/global.css";
     <title>Astro</title>
   </head>
   <body>
-    <slot />
+    <header>
+      <TopBar client:load />
+    </header>
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

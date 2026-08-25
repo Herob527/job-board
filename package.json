@@ -29,6 +29,7 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^1.0.0-rc.5-ab785fc",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.0",
     "preact": "^10.29.8",
     "tailwindcss": "^4.3.3",
