@@ -1,5 +1,6 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 import { drizzle } from "drizzle-orm/node-postgres";
+import jwt from "jsonwebtoken";
 
 const dbUrl =
   process.env.DATABASE_URL ||
@@ -14,9 +15,12 @@ const initDb = defineMiddleware((context, next) => {
 });
 
 const loginCheck = defineMiddleware(async (context, next) => {
-  const s = await context.session?.get("user");
-  const c = context.cookies.get("user")?.value;
-  console.log({ s, c });
+  const auth = context.cookies.get("Authorization")?.value;
+  console.log({ auth });
+  if (auth) {
+    const decoded = jwt.decode(auth);
+    console.log({ decoded });
+  }
   return next();
 });
 

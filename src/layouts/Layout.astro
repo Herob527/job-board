@@ -1,6 +1,7 @@
 ---
-import TopBar from "#/features/common/TopBar";
 import "../styles/global.css";
+const auth2 = Astro.cookies.get("Authorization")?.value;
+console.log({ auth2 });
 ---
 
 <html lang="en">
@@ -22,9 +23,7 @@ import "../styles/global.css";
     <title>Astro</title>
   </head>
   <body>
-    <header>
-      <TopBar client:load />
-    </header>
+    <header>{auth2 ?? "not logged in"}</header>
     <main>
       <slot />
     </main>

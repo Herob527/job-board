@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm";
 import { loginSchema } from "#/features/auth/schema";
 import { users } from "../../db/schema";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { TOKEN_SECRET } from "astro:env/server";
 
 export default defineAction({
   input: loginSchema,
@@ -29,12 +31,13 @@ export default defineAction({
           message: "User not found or password is incorrect",
         });
       }
-      if (input.rememberMe) {
-        context.cookies.set("user", user);
-      } else {
-        context.session?.set("user", user);
-      }
-      return user;
+      const token = jwt.sign(user[0], TOKEN_SECRET, { expiresIn: "1h" });
+      context.cookies.set("Authorization", token, {
+        httpOnly: true,
+        path: "/",
+        maxAge: 3600 * 24,
+      });
+      return token;
     } catch (error) {
       console.error(error);
       if (error instanceof ActionError) {
