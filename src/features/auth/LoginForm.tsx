@@ -5,6 +5,7 @@ import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { loginSchema } from "./schema";
+import { loginSignal } from "#/utils/signals";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -13,6 +14,7 @@ const LoginForm = () => {
     mutationFn: (data: LoginFormData) => actions.login(data),
     onSuccess: ({ data }) => {
       cookieStore.set("user", JSON.stringify(data));
+      loginSignal.value = data;
     },
   });
   const formHandler = useForm({
