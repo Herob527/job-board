@@ -14,22 +14,27 @@ export default defineAction({
         .from(users)
         .where(eq(users.email, input.email))
         .limit(1);
+
       if (user.length === 0) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "User not found or password is incorrect",
         });
       }
-      const passwordMatch = await bcrypt.compare(
-        input.password,
-        user[0].password,
-      );
+      const { password, id } = user[0];
+      const passwordMatch = await bcrypt.compare(input.password, password);
       if (!passwordMatch) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "User not found or password is incorrect",
         });
       }
+      if (input.rememberMe) {
+        context.cookies.set("user", id);
+      } else {
+        context.session?.set("user", id);
+      }
+      return user;
     } catch (error) {
       console.error(error);
       if (error instanceof ActionError) {
