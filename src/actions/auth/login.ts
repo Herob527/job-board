@@ -23,7 +23,7 @@ export default defineAction({
           message: "User not found or password is incorrect",
         });
       }
-      const { password } = user[0];
+      const { password, ...rest } = user[0];
       const passwordMatch = await bcrypt.compare(input.password, password);
       if (!passwordMatch) {
         throw new ActionError({
@@ -31,7 +31,7 @@ export default defineAction({
           message: "User not found or password is incorrect",
         });
       }
-      const token = jwt.sign(user[0], TOKEN_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign(rest, TOKEN_SECRET, { expiresIn: "1h" });
       context.cookies.set("Authorization", token, {
         httpOnly: true,
         path: "/",
