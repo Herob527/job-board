@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
-const auth2 = Astro.cookies.get("Authorization")?.value;
-console.log({ auth2 });
+const auth2 = Astro.locals.user;
 ---
 
 <html lang="en">
@@ -23,7 +22,7 @@ console.log({ auth2 });
     <title>Astro</title>
   </head>
   <body>
-    <header>{auth2 ?? "not logged in"}</header>
+    <header>{auth2?.email ?? "not logged in"}</header>
     <main>
       <slot />
     </main>

@@ -16,6 +16,14 @@ export const loginSchema = baseLoginSchema.extend({
 });
 
 const baseRegisterSchema = baseLoginSchema.extend({
+  name: z
+    .string()
+    .min(3, { message: "Name must be at least 3 characters long" })
+    .max(40, { message: "Name can be at most 40 characters long" }),
+  surname: z
+    .string()
+    .min(3, { message: "Surname must be at least 3 characters long" })
+    .max(40, { message: "Surname can be at most 40 characters long" }),
   confirmPassword: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
@@ -25,14 +33,6 @@ const baseRegisterSchema = baseLoginSchema.extend({
 export const registerSchema = z
   .discriminatedUnion("registerAs", [
     baseRegisterSchema.extend({
-      name: z
-        .string()
-        .min(3, { message: "Name must be at least 3 characters long" })
-        .max(40, { message: "Name can be at most 40 characters long" }),
-      surname: z
-        .string()
-        .min(3, { message: "Surname must be at least 3 characters long" })
-        .max(40, { message: "Surname can be at most 40 characters long" }),
       registerAs: z.literal("candidate"),
     }),
     baseRegisterSchema.extend({

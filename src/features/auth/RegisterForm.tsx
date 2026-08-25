@@ -74,38 +74,30 @@ const RegisterForm = () => {
         label={formMode === "candidate" ? "E-mail" : "Owner e-mail"}
         type="email"
       />
-
       <CustomField
         formHandler={formHandler}
         name="password"
         label="Password"
         type="password"
       />
-
       <CustomField
         formHandler={formHandler}
         name="confirmPassword"
         label="Confirm password"
         type="password"
       />
-
-      {formMode === "candidate" && (
-        <CustomField
-          formHandler={formHandler}
-          name="name"
-          label="Name"
-          type="text"
-        />
-      )}
-
-      {formMode === "candidate" && (
-        <CustomField
-          formHandler={formHandler}
-          name="surname"
-          label="Surname"
-          type="text"
-        />
-      )}
+      <CustomField
+        formHandler={formHandler}
+        name="name"
+        label={formMode === "candidate" ? "Name" : "Owner's Name"}
+        type="text"
+      />
+      <CustomField
+        formHandler={formHandler}
+        name="surname"
+        label={formMode === "candidate" ? "Surname" : "Owner's surname"}
+        type="text"
+      />
       {formMode === "company" && (
         <CustomField
           formHandler={formHandler}
@@ -114,7 +106,6 @@ const RegisterForm = () => {
           type="text"
         />
       )}
-
       {formMode === "company" && (
         <formHandler.Field name="locations" mode="array">
           {(field) => (
