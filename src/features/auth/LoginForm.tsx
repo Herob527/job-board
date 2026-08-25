@@ -11,8 +11,9 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginForm = () => {
   const { mutate } = useMutation({
     mutationFn: (data: LoginFormData) => actions.login(data),
-    // onSuccess: ({ data }) => {
-    // },
+    onSuccess: () => {
+      location.reload();
+    },
   });
   const formHandler = useForm({
     defaultValues: {
