@@ -176,17 +176,12 @@ export const jobOfferSkill = pgTable(
   (t) => [primaryKey({ columns: [t.jobOfferId, t.name] })],
 );
 
-export const resume = pgTable(
-  "Resume",
-  {
-    userId: uuid()
-      .primaryKey()
-      .references(() => users.id),
-    cvFileRef: varchar("cv_file_ref", { length: stringSizes.url }).notNull(),
-    ...timestamps,
-  },
-  (t) => [primaryKey({ columns: [t.userId, t.cvFileRef] })],
-);
+export const resume = pgTable("Resume", {
+  id: uuid().primaryKey().default(sql`uuidv7()`),
+  userId: uuid().references(() => users.id),
+  cvFileRef: varchar("cv_file_ref", { length: stringSizes.url }).notNull(),
+  ...timestamps,
+});
 
 export const application = pgTable(
   "Application",
@@ -198,7 +193,7 @@ export const application = pgTable(
       .references(() => jobOffer.id)
       .notNull(),
     resumeId: uuid()
-      .references(() => resume.userId)
+      .references(() => resume.id)
       .notNull(),
     additionalInfo: varchar({ length: stringSizes.markdown }),
     status: applicationStatusEnum()
