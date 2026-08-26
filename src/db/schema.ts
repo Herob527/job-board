@@ -202,5 +202,5 @@ export const application = pgTable(
     additionalResponseInfo: varchar({ length: stringSizes.markdown }),
     ...timestamps,
   },
-  (t) => [primaryKey({ columns: [t.userId, t.jobOfferId] })],
+  (t) => [primaryKey({ columns: [t.userId, t.jobOfferId, t.resumeId] })],
 );
