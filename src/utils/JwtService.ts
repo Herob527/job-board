@@ -13,7 +13,7 @@ class JwtService {
       .setIssuedAt()
       .setIssuer("job-board")
       .setAudience("user")
-      .setExpirationTime(this.expirationTime)
+      .setExpirationTime("1d")
       .sign(this.encodedSecret);
   }
 
