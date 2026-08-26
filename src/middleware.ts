@@ -8,7 +8,7 @@ const dbUrl =
     throw new Error("DATABASE_URL is not defined");
   })();
 
-const initDb = defineMiddleware((context, next) => {
+const initDeps = defineMiddleware((context, next) => {
   const deps: Partial<Deps> = {};
   deps.db = drizzle(dbUrl);
   deps.jwtService = jwtService;
@@ -36,4 +36,4 @@ const loginCheck = defineMiddleware(async (context, next) => {
   return next();
 });
 
-export const onRequest = sequence(initDb, loginCheck);
+export const onRequest = sequence(initDeps, loginCheck);
