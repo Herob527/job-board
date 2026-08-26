@@ -1,6 +1,6 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 import { drizzle } from "drizzle-orm/node-postgres";
-import jwtService from "./utils/JwtHandler";
+import jwtService from "./utils/JwtService";
 
 const dbUrl =
   process.env.DATABASE_URL ||
