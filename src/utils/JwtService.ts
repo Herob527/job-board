@@ -5,15 +5,17 @@ import * as jose from "jose";
 class JwtService {
   private encodedSecret = new TextEncoder().encode(TOKEN_SECRET);
   private algorithm: jose.JWSAlgorithm = "HS256";
-  private expirationTime: number = 24 * 60 * 60;
+  private expirationTime: string = "1d";
+  private issuer = "job-board";
+  private audience = "user";
 
   async generateJwt<T extends Record<string, unknown>>(payload: T) {
     return await new jose.SignJWT(payload)
       .setProtectedHeader({ alg: this.algorithm })
       .setIssuedAt()
-      .setIssuer("job-board")
-      .setAudience("user")
-      .setExpirationTime("1d")
+      .setIssuer(this.issuer)
+      .setAudience(this.audience)
+      .setExpirationTime(this.expirationTime)
       .sign(this.encodedSecret);
   }
 
@@ -23,8 +25,8 @@ class JwtService {
         Omit<typeof users.$inferSelect, "password">
       >(token, this.encodedSecret, {
         algorithms: [this.algorithm],
-        audience: "user",
-        issuer: "job-board",
+        audience: this.audience,
+        issuer: this.issuer,
       });
       return { payload, isExpired: false, unknownFailure: false };
     } catch (e) {
