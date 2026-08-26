@@ -1,8 +1,6 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 import { drizzle } from "drizzle-orm/node-postgres";
-import jwt from "jsonwebtoken";
-import type { users } from "./db/schema";
-import { TOKEN_SECRET } from "astro:env/server";
+import jwtService from "./utils/JwtHandler";
 
 const dbUrl =
   process.env.DATABASE_URL ||
@@ -11,8 +9,10 @@ const dbUrl =
   })();
 
 const initDb = defineMiddleware((context, next) => {
-  const db = drizzle(dbUrl);
-  context.locals.db = db;
+  const deps: Partial<Deps> = {};
+  deps.db = drizzle(dbUrl);
+  deps.jwtService = jwtService;
+  Object.assign(context.locals, deps);
   return next();
 });
 
@@ -20,12 +20,14 @@ const loginCheck = defineMiddleware(async (context, next) => {
   const auth = context.cookies.get("Authorization")?.value;
   context.locals.user = null;
   if (auth) {
-    // jsonwebtoken kinda fails to throw proper error when token is expired so let's treat every exception as expired
-    try {
-      const user = jwt.verify(auth, TOKEN_SECRET);
-      context.locals.user = user as Omit<typeof users.$inferSelect, "password">;
-    } catch {
-      context.locals.user = null;
+    const {
+      payload: user,
+      isExpired,
+      unknownFailure,
+    } = await jwtService.verifyJwt(auth);
+
+    if (!isExpired && !unknownFailure) {
+      context.locals.user = user;
     }
   }
   return next();

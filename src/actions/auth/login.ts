@@ -3,14 +3,12 @@ import { eq } from "drizzle-orm";
 import { loginSchema } from "#/features/auth/schema";
 import { users } from "../../db/schema";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "astro:env/server";
 
 export default defineAction({
   input: loginSchema,
   handler: async (input, context) => {
     try {
-      const { db } = context.locals;
+      const { db, jwtService } = context.locals;
       const user = await db
         .select()
         .from(users)
@@ -31,7 +29,8 @@ export default defineAction({
           message: "User not found or password is incorrect",
         });
       }
-      const token = jwt.sign(rest, TOKEN_SECRET, { expiresIn: "1h" });
+      const token = await jwtService.generateJwt(rest);
+
       context.cookies.set("Authorization", token, {
         httpOnly: true,
         path: "/",
