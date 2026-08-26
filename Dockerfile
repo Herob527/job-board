@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY bun.lock /app/bun.lock
 
-RUN bun install --frozen-lockfile
+RUN --mount=type=cache,target=/root/.bun/install/cache  bun install --frozen-lockfile
 
 FROM base AS dev
 
