@@ -105,7 +105,8 @@ For testing, I have general idea to create agents for recruiters and candidates
 It'd be pretty much simulation, so agents would work on own infrastructure,
 but still use job board for operations
 
-To be thought out, since it's difficult to define processes like creation, interview, working, morale and limitations agents shall abide by
+To be thought out, since it's difficult to define processes like creation, interview, working, moralem, incentives and limitations agents shall abide by
+
 But not impossible
 
 ### Scope
