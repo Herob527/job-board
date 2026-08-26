@@ -1,10 +1,10 @@
 import { actions } from "astro:actions";
 import { revalidateLogic, useForm, useSelector } from "@tanstack/preact-form";
+import { useMutation } from "@tanstack/preact-query";
 import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { registerSchema } from "./schema";
-import { useMutation } from "@tanstack/preact-query";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 

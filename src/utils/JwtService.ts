@@ -1,6 +1,6 @@
-import type { users } from "#/db/schema";
 import { TOKEN_SECRET } from "astro:env/server";
 import * as jose from "jose";
+import type { users } from "#/db/schema";
 
 class JwtService {
   private encodedSecret = new TextEncoder().encode(TOKEN_SECRET);

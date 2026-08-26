@@ -1,11 +1,9 @@
 // @ts-check
 
 import node from "@astrojs/node";
-import { defineConfig, envField } from "astro/config";
-
-import tailwindcss from "@tailwindcss/vite";
-
 import preact from "@astrojs/preact";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, envField } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({

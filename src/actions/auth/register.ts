@@ -1,8 +1,8 @@
 import { ActionError, defineAction } from "astro:actions";
-import { registerSchema } from "#/features/auth/schema";
-import { users } from "#/db/schema";
-import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
+import { eq } from "drizzle-orm";
+import { users } from "#/db/schema";
+import { registerSchema } from "#/features/auth/schema";
 
 export default defineAction({
   input: registerSchema,
