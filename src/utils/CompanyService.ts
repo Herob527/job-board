@@ -1,4 +1,4 @@
-import { company, corporateMembership } from "#/db/schema";
+import { company, corporateMembership, corporateRoleEnum } from "#/db/schema";
 import { registerSchema } from "#/features/auth/schema";
 import { DatabaseError } from "pg";
 import z from "zod";
@@ -6,10 +6,12 @@ import { OPSTATUS } from "./errorCodes";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
+type CorporateRole = (typeof corporateRoleEnum.enumValues)[number];
+
 interface AssignUserToCompany {
   userId: string;
   companyId: string;
-  roles: ("company_admin" | "recruiter")[];
+  roles: CorporateRole[];
 }
 
 export default class CompanyService {
