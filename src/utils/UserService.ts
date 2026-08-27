@@ -1,8 +1,8 @@
-import { users } from "#/db/schema";
-import { registerSchema } from "#/features/auth/schema";
 import { eq } from "drizzle-orm";
 import { DatabaseError } from "pg";
-import z from "zod";
+import type z from "zod";
+import { users } from "#/db/schema";
+import type { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
@@ -56,5 +56,4 @@ export default class UserService {
       return { user: null, isDuplicate: false, isUnknownError: true } as const;
     }
   }
-
 }

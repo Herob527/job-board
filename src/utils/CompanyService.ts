@@ -1,7 +1,11 @@
-import { company, corporateMembership, corporateRoleEnum } from "#/db/schema";
-import { registerSchema } from "#/features/auth/schema";
 import { DatabaseError } from "pg";
 import z from "zod";
+import {
+  company,
+  corporateMembership,
+  type corporateRoleEnum,
+} from "#/db/schema";
+import { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;

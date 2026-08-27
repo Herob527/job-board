@@ -2,9 +2,9 @@
 
 import type { drizzle } from "drizzle-orm/node-postgres";
 import type { users } from "./db/schema";
+import type CompanyService from "./utils/CompanyService";
 import type jwtService from "./utils/JwtService";
 import type UserService from "./utils/UserService";
-import type CompanyService from "./utils/CompanyService";
 
 declare global {
   interface Deps {
