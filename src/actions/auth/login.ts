@@ -1,27 +1,21 @@
 import { ActionError, defineAction } from "astro:actions";
 import bcrypt from "bcrypt";
-import { eq } from "drizzle-orm";
 import { loginSchema } from "#/features/auth/schema";
-import { users } from "../../db/schema";
 
 export default defineAction({
   input: loginSchema,
   handler: async (input, context) => {
     try {
-      const { db, jwtService } = context.locals;
-      const user = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, input.email))
-        .limit(1);
+      const { jwtService, userService } = context.locals;
+      const user = await userService.getUserByEmail(input.email);
 
-      if (user.length === 0) {
+      if (!user) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "User not found or password is incorrect",
         });
       }
-      const { password, ...rest } = user[0];
+      const { password, ...rest } = user;
       const passwordMatch = await bcrypt.compare(input.password, password);
       if (!passwordMatch) {
         throw new ActionError({
