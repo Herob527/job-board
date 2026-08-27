@@ -1,4 +1,3 @@
-import { DatabaseError } from "pg";
 import z from "zod";
 import {
   company,
@@ -7,6 +6,7 @@ import {
 } from "#/db/schema";
 import { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
+import { getDatabaseError } from "./isDatabaseError";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
@@ -48,14 +48,13 @@ export default class CompanyService {
         isUnknownError: false,
       } as const;
     } catch (error) {
-      if (error instanceof DatabaseError) {
-        if (error.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
-          return {
-            company: null,
-            isDuplicate: true,
-            isUnknownError: false,
-          } as const;
-        }
+      const dbError = getDatabaseError(error);
+      if (dbError && dbError.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
+        return {
+          company: null,
+          isDuplicate: true,
+          isUnknownError: false,
+        } as const;
       }
 
       return {
@@ -79,14 +78,13 @@ export default class CompanyService {
         isDuplicate: false,
       } as const;
     } catch (error) {
-      if (error instanceof DatabaseError) {
-        if (error.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
-          return {
-            isSuccess: false,
-            isUnknownError: false,
-            isDuplicate: true,
-          } as const;
-        }
+      const dbError = getDatabaseError(error);
+      if (dbError && dbError.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
+        return {
+          isSuccess: false,
+          isUnknownError: false,
+          isDuplicate: true,
+        } as const;
       }
       return {
         isSuccess: false,

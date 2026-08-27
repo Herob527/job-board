@@ -1,9 +1,9 @@
-import { DrizzleQueryError, eq } from "drizzle-orm";
-import { DatabaseError } from "pg";
+import { eq } from "drizzle-orm";
 import type z from "zod";
 import { users } from "#/db/schema";
 import type { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
+import { getDatabaseError } from "./isDatabaseError";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
@@ -43,16 +43,13 @@ export default class UserService {
         isUnknownError: false,
       } as const;
     } catch (error) {
-      if (error instanceof DrizzleQueryError) {
-        if (error.cause instanceof DatabaseError) {
-          if (error.cause.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
-            return {
-              user: null,
-              isDuplicate: true,
-              isUnknownError: false,
-            } as const;
-          }
-        }
+      const dbError = getDatabaseError(error);
+      if (dbError && dbError.code === OPSTATUS.UNIQUE_VIOLATION.toString()) {
+        return {
+          user: null,
+          isDuplicate: true,
+          isUnknownError: false,
+        } as const;
       }
 
       return { user: null, isDuplicate: false, isUnknownError: true } as const;
