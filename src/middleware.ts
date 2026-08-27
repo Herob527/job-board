@@ -2,6 +2,7 @@ import { defineMiddleware, sequence } from "astro:middleware";
 import { drizzle } from "drizzle-orm/node-postgres";
 import jwtService from "./utils/JwtService";
 import UserService from "./utils/UserService";
+import CompanyService from "./utils/CompanyService";
 
 const dbUrl =
   process.env.DATABASE_URL ||
@@ -14,6 +15,7 @@ const initDeps = defineMiddleware((context, next) => {
   deps.db = drizzle(dbUrl);
   deps.jwtService = jwtService;
   deps.userService = new UserService(deps.db);
+  deps.companyService = new CompanyService(deps.db);
   Object.assign(context.locals, deps);
   return next();
 });

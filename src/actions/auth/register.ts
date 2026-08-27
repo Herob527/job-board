@@ -5,7 +5,7 @@ import { registerSchema } from "#/features/auth/schema";
 export default defineAction({
   input: registerSchema,
   handler: async (input, context) => {
-    const { userService } = context.locals;
+    const { userService, companyService } = context.locals;
 
     const hashedPassword = await bcrypt.hash(input.password, 10);
     const { user, isDuplicate, isUnknownError } = await userService.createUser(
@@ -31,7 +31,7 @@ export default defineAction({
         company,
         isDuplicate: isDuplicateCompany,
         isUnknownError: isUnknownErrorCompany,
-      } = await userService.createCompany({
+      } = await companyService.createCompany({
         locations: input.locations,
         companyName: input.companyName,
       });
@@ -49,7 +49,7 @@ export default defineAction({
         });
       }
       const { isUnknownError, isDuplicate } =
-        await userService.assignUserToCompany({
+        await companyService.assignUserToCompany({
           userId: user.id,
           companyId: company.id,
           roles: ["company_admin"],
