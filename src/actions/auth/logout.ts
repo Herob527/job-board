@@ -3,5 +3,7 @@ import { z } from "astro/zod";
 
 export default defineAction({
   input: z.object(),
-  handler: (input, context) => {},
+  handler: (_, context) => {
+    context.cookies.delete("Authorization");
+  },
 });
