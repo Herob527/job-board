@@ -19,7 +19,8 @@ export default class UserService {
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
-    return user?.[0];
+    if (user.length === 0) return null;
+    return user[0];
   }
 
   async createUser(input: z.infer<typeof registerSchema>, password: string) {
