@@ -15,6 +15,7 @@ const RegisterForm = () => {
   const formHandler = useForm({
     defaultValues: {
       registerAs: "candidate",
+      locations: [],
     } as RegisterFormData,
     validators: { onChange: registerSchema },
     validationLogic: revalidateLogic({
@@ -26,6 +27,7 @@ const RegisterForm = () => {
       mutate(data.value);
     },
     onSubmitInvalid: (data) => {
+      console.log(data.value);
       console.error(data.formApi.getAllErrors());
     },
   });
@@ -113,11 +115,8 @@ const RegisterForm = () => {
               <span class="absolute top-0 left-2 px-2 translate-y-[-50%] bg-white">
                 Locations
               </span>
-              {(field.state.value ?? [""]).map((location, index) => (
-                <formHandler.Field
-                  key={index}
-                  name={`locations[${index}].name`}
-                >
+              {field.state.value.map((location, index) => (
+                <formHandler.Field key={index} name={`locations[${index}]`}>
                   {(subfield) => (
                     <div class="flex flex-row">
                       <input
@@ -144,7 +143,7 @@ const RegisterForm = () => {
                   )}
                 </formHandler.Field>
               ))}
-              {(field.state.value ?? []).length < 7 && (
+              {field.state.value.length < 7 && (
                 <button
                   type="button"
                   class="border border-amber-400 hover:bg-amber-400 hover:text-white px-4 py-2 rounded-l-sm min-w-40 flex-1"
