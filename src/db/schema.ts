@@ -111,7 +111,10 @@ export const candidateProject = pgTable("CandidateProject", {
 export const company = pgTable("Company", {
   id: uuid().primaryKey().default(sql`uuidv7()`),
   name: varchar("name", { length: stringSizes.short }).notNull().unique(),
-  location: text().array().notNull().default(sql`'{}'`),
+  registrationLocation: varchar("registration_location", {
+    length: stringSizes.short,
+  }),
+  locations: text().array().notNull().default(sql`'{}'`),
   ...timestamps,
 });
 
