@@ -3,9 +3,11 @@ import type { FunctionComponent } from "preact";
 
 const queryClient = new QueryClient();
 
-const withQuery = (Component: FunctionComponent) => () => (
+const withQuery = <P extends object>(
+  Component: FunctionComponent<P>,
+) => (props: P) => (
   <QueryClientProvider client={queryClient}>
-    <Component />
+    <Component {...props} />
   </QueryClientProvider>
 );
 
