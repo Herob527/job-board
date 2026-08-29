@@ -19,7 +19,6 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
     validators: { onChange: loginSchema },
     validationLogic: revalidateLogic({
@@ -51,21 +50,6 @@ const LoginForm = () => {
         name="password"
         label="Password"
         type="password"
-      />
-
-      <formHandler.Field
-        name="rememberMe"
-        children={(field) => (
-          <div class="flex flex-row gap-1 items-center">
-            <span>Remember me</span>
-            <input
-              type="checkbox"
-              name={field.name}
-              checked={field.state.value}
-              onInput={(e) => field.handleChange(e.currentTarget.checked)}
-            />
-          </div>
-        )}
       />
 
       <button type="submit" class="bg-amber-300 px-4 py-2 rounded-sm">

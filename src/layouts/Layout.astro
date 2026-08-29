@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 
-const auth2 = Astro.locals.user;
+const user = Astro.locals.user;
 ---
 
 <html lang="en">
@@ -23,7 +23,20 @@ const auth2 = Astro.locals.user;
     <title>Astro</title>
   </head>
   <body>
-    <header>{auth2?.email ?? "not logged in"}</header>
+    <header class="w-full border px-2 py-4">
+      <div class="flex gap-2">
+        <button
+          type="button"
+          class="bg-amber-300 px-4 py-2">
+          Login
+        </button>
+        <a
+          href="/register"
+          class="bg-amber-300 px-4 py-2"
+          >Register</a
+        >
+      </div>
+    </header>
     <main>
       <slot />
     </main>

@@ -11,9 +11,7 @@ export const baseLoginSchema = z.object({
     .max(40, { message: "Password can be at most 40 characters long" }),
 });
 
-export const loginSchema = baseLoginSchema.extend({
-  rememberMe: z.boolean().default(false),
-});
+export const loginSchema = baseLoginSchema.extend({});
 
 const baseRegisterSchema = baseLoginSchema.extend({
   name: z
@@ -41,15 +39,7 @@ export const registerSchema = z
         .string()
         .min(3, { message: "Company name must be at least 3 characters long" })
         .max(40, { message: "Company name can be at most 40 characters long" }),
-      locations: z
-        .string()
-        .min(3)
-        .max(100)
-        .array()
-        .min(1, {
-          error: "At least one location is required",
-        })
-        .max(7),
+      registrationLocation: z.string().min(3).max(100),
     }),
   ])
   .refine((form) => form.password === form.confirmPassword, {
