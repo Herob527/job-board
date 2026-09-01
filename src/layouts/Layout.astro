@@ -1,4 +1,5 @@
 ---
+import LoginForm from "#/features/auth/LoginForm";
 import "../styles/global.css";
 
 const user = Astro.locals.user;
@@ -26,6 +27,7 @@ const user = Astro.locals.user;
     <header class="w-full border px-2 py-4">
       <div class="flex gap-2">
         {user === null && <button
+          id="login"
           type="button"
           class="bg-amber-300 px-4 py-2">
           Login
@@ -44,12 +46,19 @@ const user = Astro.locals.user;
     </header>
     <main>
       <slot />
+      <div
+        id="modal"
+        data-hidden={true}
+        class="fixed top-1/2 right-1/2 z-10 translate-x-1/2 -translate-y-1/2 bg-white shadow-2xl data-[hidden=true]:hidden">
+        <LoginForm client:visible />
+      </div>
     </main>
   </body>
 </html>
 
 <script>
 import { actions } from "astro:actions";
+
 (() => {
   const logout = document.querySelector("#logout");
   if (!logout) {
@@ -60,5 +69,16 @@ import { actions } from "astro:actions";
       window.location.reload();
     });
   });
+})();
+
+(() => {
+  const login = document.querySelector<HTMLButtonElement>("#login");
+  const modal = document.querySelector<HTMLDivElement>("#modal");
+
+  if (login && modal) {
+    login.addEventListener("click", () => {
+      modal.dataset.hidden = "false";
+    });
+  }
 })();
 </script>
