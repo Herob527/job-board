@@ -4,7 +4,14 @@ import Layout from "#/layouts/Layout.astro";
 ---
 
 <Layout>
-  <RegisterForm
-    client:load
-    registerAs="candidate" />
+  <div
+    class="mx-auto mt-6 flex w-full flex-row items-start justify-center gap-4">
+    <RegisterForm
+      client:load
+      registerAs="candidate" />
+
+    <RegisterForm
+      client:load
+      registerAs="company" />
+  </div>
 </Layout>

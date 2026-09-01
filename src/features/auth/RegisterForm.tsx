@@ -5,14 +5,15 @@ import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { registerSchema } from "./schema";
+import type { FormHTMLAttributes } from "preact";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-interface Props {
+interface Props extends FormHTMLAttributes {
   registerAs: RegisterFormData["registerAs"];
 }
 
-const RegisterForm = ({ registerAs }: Props) => {
+const RegisterForm = ({ registerAs, ...rest }: Props) => {
   const { mutate } = useMutation({
     mutationFn: (data: RegisterFormData) => actions.register(data),
   });
@@ -41,11 +42,12 @@ const RegisterForm = ({ registerAs }: Props) => {
 
   return (
     <form
+      {...rest}
       onSubmit={(ev) => {
         ev.preventDefault();
         formHandler.handleSubmit();
       }}
-      class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
+      class={`inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm ${rest.class}`}
     >
       <CustomField
         formHandler={formHandler}

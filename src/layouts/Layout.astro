@@ -25,7 +25,7 @@ const user = Astro.locals.user;
   <body>
     <header class="w-full border px-2 py-4">
       <div class="flex gap-2">
-        <button
+        {user === null && <button
           type="button"
           class="bg-amber-300 px-4 py-2">
           Login
@@ -34,7 +34,12 @@ const user = Astro.locals.user;
           href="/register"
           class="bg-amber-300 px-4 py-2"
           >Register</a
-        >
+        >}
+        {user !== null && <button
+          id="logout"
+            type="button"
+          class="bg-amber-300 px-4 py-2"
+          >Logout</button>}
       </div>
     </header>
     <main>
@@ -42,3 +47,18 @@ const user = Astro.locals.user;
     </main>
   </body>
 </html>
+
+<script>
+import { actions } from "astro:actions";
+(() => {
+  const logout = document.querySelector("#logout");
+  if (!logout) {
+    return;
+  }
+  logout.addEventListener("click", () => {
+    actions.logout().then(() => {
+      window.location.reload();
+    });
+  });
+})();
+</script>
