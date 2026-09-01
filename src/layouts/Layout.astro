@@ -42,6 +42,18 @@ const user = Astro.locals.user;
             type="button"
           class="bg-amber-300 px-4 py-2"
           >Logout</button>}
+        {user?.roles?.includes("candidate") && <a
+
+          class="bg-amber-300 px-4 py-2"
+          href="/candidate">Your profile</a>}
+        {user?.roles?.includes("corporate") && <a
+
+          class="bg-amber-300 px-4 py-2"
+          href="/company">Company profile</a>}
+        {user?.roles?.includes("platform_admin") && <a 
+
+          class="bg-amber-300 px-4 py-2"
+          href="/admin-panel">Admin panel</a>}
       </div>
     </header>
     <main>
