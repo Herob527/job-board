@@ -32,9 +32,8 @@ const loginCheck = defineMiddleware(async (context, next) => {
 
     if (!isExpired && !unknownFailure) {
       context.locals.user = user;
-      if (!import.meta.env.DEV) {
-        context.cookies.delete("Authorization");
-      }
+    } else if (isExpired) {
+      context.cookies.delete("Authorization");
     }
   }
   return next();
