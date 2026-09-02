@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type z from "zod";
-import { users } from "#/db/schema";
+import { company, corporateMembership, users } from "#/db/schema";
 import type { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 import { getDatabaseError } from "./isDatabaseError";
@@ -21,6 +21,15 @@ export default class UserService {
       .limit(1);
     if (user.length === 0) return null;
     return user[0];
+  }
+
+  async getAssignedCompanies(userId: string) {
+    const companies = await this.#db
+      .select()
+      .from(corporateMembership)
+      .where(eq(corporateMembership.userId, userId))
+      .innerJoin(company, eq(corporateMembership.companyId, company.id));
+    return companies;
   }
 
   async createUser(input: z.infer<typeof registerSchema>, password: string) {

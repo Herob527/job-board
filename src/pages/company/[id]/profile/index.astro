@@ -1,0 +1,20 @@
+---
+import Layout from "#/layouts/Layout.astro";
+const { id } = Astro.params;
+if (!id) {
+  throw new Error("ID not supplied");
+}
+const { companyService } = Astro.locals;
+const data = await companyService.getCompanyById(id);
+if (!data) {
+  throw new Error("Company not found");
+}
+---
+
+<Layout
+  ><section class="container mx-auto mt-4">
+    <header>
+      <h1 class="text-center text-3xl font-bold">{data.name}</h1>
+    </header>
+  </section></Layout
+>

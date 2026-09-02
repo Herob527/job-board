@@ -7,6 +7,7 @@ import {
 import { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 import { getDatabaseError } from "./isDatabaseError";
+import { eq } from "drizzle-orm";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
@@ -31,14 +32,14 @@ export default class CompanyService {
   async createCompany(
     input: Pick<
       z.infer<typeof this.corporateSchema>,
-      "companyName" | "locations"
+      "companyName" | "registrationLocation"
     >,
   ) {
     try {
       const companyData = await this.#db
         .insert(company)
         .values({
-          location: input.locations,
+          registrationLocation: input.registrationLocation,
           name: input.companyName,
         })
         .returning();
@@ -63,6 +64,18 @@ export default class CompanyService {
         isUnknownError: true,
       } as const;
     }
+  }
+
+  async createJobOffer() {}
+
+  async getCompanyById(id: string) {
+    const companyData = await this.#db
+      .select()
+      .from(company)
+      .where(eq(company.id, id))
+      .limit(1);
+    if (companyData.length === 0) return null;
+    return companyData[0];
   }
 
   async assignUserToCompany({ userId, companyId, roles }: AssignUserToCompany) {

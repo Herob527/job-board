@@ -3,6 +3,10 @@ import LoginForm from "#/features/auth/LoginForm";
 import "../styles/global.css";
 
 const user = Astro.locals.user;
+const { userService } = Astro.locals;
+const assignedCompanies = user?.roles.includes("corporate")
+  ? await userService.getAssignedCompanies(user.id)
+  : [];
 ---
 
 <html lang="en">
@@ -46,10 +50,7 @@ const user = Astro.locals.user;
 
           class="bg-amber-300 px-4 py-2"
           href="/candidate">Your profile</a>}
-        {user?.roles?.includes("corporate") && <a
-
-          class="bg-amber-300 px-4 py-2"
-          href="/company">Company profile</a>}
+        {assignedCompanies.map((d) => <a href={`/company/${d.Company.id}/profile`} class="bg-amber-500 px-4 py-2">{d.Company.name}</a>)}
         {user?.roles?.includes("platform_admin") && <a 
 
           class="bg-amber-300 px-4 py-2"

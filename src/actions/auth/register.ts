@@ -32,7 +32,7 @@ export default defineAction({
         isDuplicate: isDuplicateCompany,
         isUnknownError: isUnknownErrorCompany,
       } = await companyService.createCompany({
-        locations: input.locations,
+        registrationLocation: input.registrationLocation,
         companyName: input.companyName,
       });
       if (isDuplicateCompany) {
