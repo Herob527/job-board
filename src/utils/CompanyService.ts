@@ -2,6 +2,7 @@ import z from "zod";
 import {
   company,
   corporateMembership,
+  users,
   type corporateRoleEnum,
 } from "#/db/schema";
 import { registerSchema } from "#/features/auth/schema";
@@ -34,6 +35,7 @@ export default class CompanyService {
       z.infer<typeof this.corporateSchema>,
       "companyName" | "registrationLocation"
     >,
+    ownerId: string,
   ) {
     try {
       const companyData = await this.#db
@@ -41,6 +43,7 @@ export default class CompanyService {
         .values({
           registrationLocation: input.registrationLocation,
           name: input.companyName,
+          ownerId,
         })
         .returning();
       return {
@@ -70,8 +73,9 @@ export default class CompanyService {
 
   async getCompanyById(id: string) {
     const companyData = await this.#db
-      .select()
+      .select({ company, owner: users })
       .from(company)
+      .innerJoin(users, eq(users.id, company.ownerId))
       .where(eq(company.id, id))
       .limit(1);
     if (companyData.length === 0) return null;

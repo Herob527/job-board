@@ -31,10 +31,13 @@ export default defineAction({
         company,
         isDuplicate: isDuplicateCompany,
         isUnknownError: isUnknownErrorCompany,
-      } = await companyService.createCompany({
-        registrationLocation: input.registrationLocation,
-        companyName: input.companyName,
-      });
+      } = await companyService.createCompany(
+        {
+          registrationLocation: input.registrationLocation,
+          companyName: input.companyName,
+        },
+        user.id,
+      );
       if (isDuplicateCompany) {
         throw new ActionError({
           code: "CONFLICT",
