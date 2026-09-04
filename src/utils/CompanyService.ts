@@ -73,9 +73,8 @@ export default class CompanyService {
 
   async getCompanyById(id: string) {
     const companyData = await this.#db
-      .select({ company, owner: users })
+      .select()
       .from(company)
-      .innerJoin(users, eq(users.id, company.ownerId))
       .where(eq(company.id, id))
       .limit(1);
     if (companyData.length === 0) return null;
