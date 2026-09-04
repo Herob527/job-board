@@ -1,4 +1,6 @@
 ---
+import CreateJobOffer from "#/features/job-offer/create/CreateJobOffer";
+import JobOfferList from "#/features/job-offer/list/JobOfferList";
 import Layout from "#/layouts/Layout.astro";
 const { id } = Astro.params;
 if (!id) {
@@ -14,15 +16,13 @@ if (!data) {
 <Layout>
   <section class="container mx-auto mt-4">
     <header>
-      <h1 class="text-center text-3xl font-bold">{data.company.name}</h1>
+      <h1 class="text-center text-3xl font-bold">{data.name}</h1>
     </header>
-    <section>
-      <header>
-        <h2 class="text-2xl font-bold">Owner</h2>
-      </header>
-      <div>
-        <span>{data.owner.name} {data.owner.surname}</span>
-      </div>
-    </section>
+    <div>
+      <CreateJobOffer client:load />
+    </div>
+    <div>
+      <JobOfferList />
+    </div>
   </section>
 </Layout>
