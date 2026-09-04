@@ -65,6 +65,8 @@ export const users = pgTable("User", {
   ...timestamps,
 });
 
+// TODO: Reconsider, since it introduces duplicates and duplicates with jobOfferSkill difference being it's for job offer, not candidate
+// Separate general table for skills could work, but would reduce flexibility
 export const candidateSkill = pgTable(
   "CandidateSkill",
   {
@@ -164,11 +166,14 @@ export const jobOffer = pgTable(
       .notNull()
       .default(sql`'{}'::seniority[]`),
     location: text().array().notNull().default(sql`'{}'`),
+    deadline: date().notNull(),
     ...timestamps,
   },
   (t) => [check("salaryCheck", sql`${t.minSalary} < ${t.maxSalary}`)],
 );
 
+// TODO: Reconsider, since it introduces duplicates
+// Separate general table for skills could work, but would reduce flexibility
 export const jobOfferSkill = pgTable(
   "JobOfferSkill",
   {
