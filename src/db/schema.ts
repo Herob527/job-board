@@ -43,9 +43,9 @@ export const roleEnum = pgEnum("role", [
 ]);
 
 const stringSizes = {
+  currency: 3,
   short: 255,
   url: 1024,
-  currency: 3,
   markdown: 16536,
 } as const;
 
@@ -115,6 +115,9 @@ export const company = pgTable("Company", {
     length: stringSizes.short,
   }),
   locations: text().array().notNull().default(sql`'{}'`),
+  ownerId: uuid()
+    .references(() => users.id)
+    .notNull(),
   ...timestamps,
 });
 
