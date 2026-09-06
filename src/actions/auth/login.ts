@@ -30,7 +30,6 @@ export default defineAction({
         path: "/",
         maxAge: 3600 * 24,
       });
-      return token;
     } catch (error) {
       console.error(error);
       if (error instanceof ActionError) {
