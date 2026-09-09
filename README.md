@@ -6,6 +6,7 @@ Fullstack Stack:
 
 - Astro
 - PostreSQL
+- Drizzle ORM
 - Docker compose (later check k8s)
 
 AI Stack:
