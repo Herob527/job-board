@@ -37,6 +37,7 @@ Enums:
 - `application_status`: Sent, Seen, Interested, Hired, Rejected
 - `corporate_role`: company_admin, recruiter
 - `role`: candidate, corporate, platform_admin
+- `job_offer_status`: Open, Closed
 
 User:
 
@@ -65,19 +66,23 @@ Company:
 
 - id
 - name (unique)
-- location[]
+- registrationLocation?
+- locations[]
+- ownerId (FK User)
 
 JobOffer:
 
 - id
 - companyId (FK Company)
 - title
+- status (`job_offer_status`, default Open)
 - description (markdown)
 - remoteType (`remote_type`)[]
-- minSalary (int?), maxSalary (int?), currency (varchar(3))
+- minSalary (int?), maxSalary (int?), currency (varchar(3))[]
 - employmentType (`employment_type`)[]
 - seniority (`seniority`)[]
 - location[]
+- deadline (date)
 - skill (`JobOfferSkill`)[]
 
 JobOfferSkill:
@@ -86,16 +91,16 @@ JobOfferSkill:
 
 Resume:
 
-- userId (PK)
+- id (PK)
+- userId (FK User)
 - cvFileRef (url)
 
 Application:
 
-- userId, jobOfferId — PK (userId, jobOfferId)
-- resumeId (FK Resume)
-- additionalInfo (markdown)
+- userId, jobOfferId, resumeId — PK (userId, jobOfferId, resumeId)
+- additionalInfo? (markdown)
 - status (`application_status`, default Sent)
-- additionalResponseInfo (markdown?)
+- additionalResponseInfo? (markdown?)
 
 Note: a `corporate` user may also hold the `candidate` role and apply to jobs like any candidate.
 
