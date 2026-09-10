@@ -69,7 +69,9 @@ export default class CompanyService {
     }
   }
 
-  async createJobOffer() {}
+  async createJobOffer() {
+    throw new Error("Function not implemented.");
+  }
 
   async getCompanyWorker(userId: string, companyId: string) {
     const companyData = await this.#db
