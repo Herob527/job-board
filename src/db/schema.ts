@@ -43,8 +43,8 @@ export const roleEnum = pgEnum("role", [
 ]);
 
 export const jobOfferStatusEnum = pgEnum("job_offer_status", [
-  "open",
-  "closed",
+  "Open",
+  "Closed",
 ]);
 
 const stringSizes = {
@@ -154,7 +154,7 @@ export const jobOffer = pgTable(
       .references(() => company.id)
       .notNull(),
     title: varchar("title", { length: stringSizes.short }).notNull(),
-    status: jobOfferStatusEnum().notNull().default("open"),
+    status: jobOfferStatusEnum().notNull().default("Open"),
     description: varchar({ length: stringSizes.markdown }).notNull(),
     remoteType: remoteTypeEnum()
       .array()
