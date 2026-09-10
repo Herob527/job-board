@@ -8,7 +8,7 @@ import {
 import { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 import { getDatabaseError } from "./isDatabaseError";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
@@ -70,6 +70,20 @@ export default class CompanyService {
   }
 
   async createJobOffer() {}
+
+  async getCompanyWorker(userId: string, companyId: string) {
+    const companyData = await this.#db
+      .select()
+      .from(corporateMembership)
+      .where(
+        and(
+          eq(corporateMembership.userId, userId),
+          eq(corporateMembership.companyId, companyId),
+        ),
+      )
+      .limit(1);
+    return companyData.at(0);
+  }
 
   async getCompanyById(id: string) {
     const companyData = await this.#db

@@ -1,7 +1,7 @@
 import z from "zod";
 import { employmentTypeEnum, remoteTypeEnum, seniorityEnum } from "#/db/schema";
 
-const schema = z.object({
+const jobSchema = z.object({
   title: z
     .string()
     .min(3, { message: "Title must be at least 3 characters long" })
@@ -39,4 +39,4 @@ const schema = z.object({
     .array(),
 });
 
-export default schema;
+export default jobSchema;
