@@ -1,4 +1,4 @@
-import { useFieldContext } from "./base";
+import { useFieldContext } from "../base";
 
 interface Props {
   label: string;
