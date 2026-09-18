@@ -15,7 +15,7 @@ const TextField = ({ label, min, max }: Props) => {
         type="text"
         min={min}
         max={max}
-        className="px-3 py-1.5 border border-amber-400"
+        class="px-3 py-1.5 border border-amber-400"
         value={ctx.state.value}
         onInput={(e) => ctx.handleChange(e.currentTarget.value)}
       />
