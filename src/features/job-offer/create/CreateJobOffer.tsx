@@ -1,9 +1,9 @@
 import { actions } from "astro:actions";
 import { useMutation } from "@tanstack/preact-query";
 import type z from "zod";
+import { useAppForm } from "#/core/form/output";
 import withQuery from "#/features/common/withQuery";
 import jobSchema from "./schema";
-import { useAppForm } from "#/core/form/output";
 
 interface Props {
   companyId: string;
@@ -28,22 +28,22 @@ const CreateJobOffer = ({ companyId }: Props) => {
     },
   });
   return (
-    <form.AppForm
-      onSubmit={(ev) => {
-        ev.preventDefault();
-        form.handleSubmit();
-      }}
-      class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
-    >
-      <form.AppField
-        name="title"
-        children={(field) => <field.TextField label="Title" />}
-      />
-      <form.AppField
-        name="deadline"
-        children={(field) => <field.DateField label="Deadline" />}
-      />
-    </form.AppForm>
+    <div class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm">
+      <form.AppForm>
+        <form.AppField
+          name="title"
+          children={(field) => <field.TextField label="Title" />}
+        />
+        <form.AppField
+          name="description"
+          children={(field) => <field.TextareaField label="Description" />}
+        />
+        <form.AppField
+          name="deadline"
+          children={(field) => <field.DateField label="Deadline" />}
+        />
+      </form.AppForm>
+    </div>
   );
 };
 
