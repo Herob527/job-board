@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/noChildrenProp: <explanation> */
 import { actions } from "astro:actions";
 import { useMutation } from "@tanstack/react-query";
 import type z from "zod";
@@ -46,21 +47,67 @@ const CreateJobOffer = ({ companyId }: Props) => {
               items={[
                 {
                   label: "Hybrid",
-                  value: "hybrid",
+                  value: "Hybrid",
                 },
                 {
                   label: "Remote",
-                  value: "remote",
+                  value: "Remote",
                 },
                 {
-                  label: "On-site",
-                  value: "onsite",
+                  label: "Office",
+                  value: "Office",
                 },
               ]}
               label="Remote type"
             />
           )}
         />
+        <form.AppField
+          name="employmentType"
+          children={(field) => (
+            <field.ListField
+              items={[
+                {
+                  label: "Employment Contact",
+                  value: "Employment Contact",
+                },
+                {
+                  label: "B2B",
+                  value: "B2B",
+                },
+                {
+                  label: "Mandate",
+                  value: "Mandate",
+                },
+              ]}
+              label="Employment type"
+            />
+          )}
+        />
+
+        <form.AppField
+          name="seniority"
+          children={(field) => (
+            <field.ListField
+              items={[
+                {
+                  label: "Junior",
+                  value: "Junior",
+                },
+                {
+                  label: "Mid",
+                  value: "Mid",
+                },
+                {
+                  label: "Senior",
+                  value: "Senior",
+                },
+              ]}
+              label="Seniority"
+            />
+          )}
+        />
+
         <form.AppField
           name="deadline"
           children={(field) => <field.DateField label="Deadline" />}
