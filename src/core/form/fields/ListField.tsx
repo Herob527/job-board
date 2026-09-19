@@ -12,50 +12,20 @@ interface Props {
   multiple?: boolean;
 }
 
-// <input
-//   type="text"
-//   className="px-3 py-1.5 border border-amber-400"
-//   value={ctx.state.value}
-//   onInput={(e) => ctx.handleChange(e.currentTarget.value)}
-// />
-const ListField = ({ label, items, multiple = false }: Props) => {
-  const ctx = useFieldContext<(string | number)[] | string | number>();
-
-  const handleChange = (value: string | number) => {
-    if (!multiple) {
-      return ctx.handleChange(value);
-    }
-
-    const currentValue = (() => {
-      const value = ctx.state.value;
-      if (Array.isArray(value)) return value;
-      if (value !== undefined && value !== null) return [value];
-      return [];
-    })();
-
-    const alreadyHas = currentValue.includes(value);
-    if (alreadyHas) {
-      return ctx.handleChange(currentValue.filter((item) => item !== value));
-    }
-    ctx.handleChange([...currentValue, value]);
-  };
-
-  const display = (() => {
-    const value = ctx.state.value;
-    if (value === undefined || value === null) {
-      return "Pick something";
-    }
-    if (Array.isArray(value)) {
-      if (value.length === 0) return "Pick something";
-      return value
-        .map((it) => items.find((item) => item.value === it)?.label)
-        .join(", ");
-    }
-    return (
-      items.find((item) => item.value === value)?.label ?? "Pick something"
-    );
-  })();
-
+/** Presentational shell shared by both variants. No generics, no unions. */
+const ListPopover = ({
+  label,
+  items,
+  display,
+  isChecked,
+  onToggle,
+}: {
+  label: string;
+  items: Item[];
+  display: string;
+  isChecked: (itemValue: string | number) => boolean;
+  onToggle: (itemValue: string | number) => void;
+}) => {
   return (
     <>
       <span>{label}</span>
@@ -79,17 +49,10 @@ const ListField = ({ label, items, multiple = false }: Props) => {
                 {items.map((item) => (
                   <div className="flex items-center gap-2" key={item.value}>
                     <Checkbox.Root
-                      key={item.value}
                       value={item.value}
                       className="bg-white h-8 w-8 rounded-sm flex items-center justify-center border border-amber-400"
-                      onCheckedChange={() => handleChange(item.value)}
-                      checked={(() => {
-                        const value = ctx.state.value;
-                        if (Array.isArray(value)) {
-                          return value.includes(item.value);
-                        }
-                        return value === item.value;
-                      })()}
+                      onCheckedChange={() => onToggle(item.value)}
+                      checked={isChecked(item.value)}
                     >
                       <Checkbox.Indicator>X</Checkbox.Indicator>
                     </Checkbox.Root>
@@ -103,6 +66,78 @@ const ListField = ({ label, items, multiple = false }: Props) => {
         </Popover.Portal>
       </Popover.Root>
     </>
+  );
+};
+
+const SingleListField = ({ label, items }: Omit<Props, "multiple">) => {
+  const { state, handleChange } = useFieldContext<string | number>();
+
+  const display = (() => {
+    if (state.value === undefined || state.value === null) {
+      return "Pick something";
+    }
+    return (
+      items.find((item) => item.value === state.value)?.label ??
+      "Pick something"
+    );
+  })();
+
+  const isChecked = (itemValue: string | number) => state.value === itemValue;
+
+  const onToggle = (itemValue: string | number) => {
+    handleChange(itemValue);
+  };
+
+  return (
+    <ListPopover
+      label={label}
+      items={items}
+      display={display}
+      isChecked={isChecked}
+      onToggle={onToggle}
+    />
+  );
+};
+
+const MultipleListField = ({ label, items }: Omit<Props, "multiple">) => {
+  const { state, handleChange } = useFieldContext<(string | number)[]>();
+  const value = state.value ?? [];
+
+  const display = (() => {
+    if (value.length === 0) {
+      return "Pick something";
+    }
+    return value
+      .map((it) => items.find((item) => item.value === it)?.label)
+      .join(", ");
+  })();
+
+  const isChecked = (itemValue: string | number) => value.includes(itemValue);
+
+  const onToggle = (itemValue: string | number) => {
+    const alreadyHas = value.includes(itemValue);
+    const newValue = alreadyHas
+      ? value.filter((item) => item !== itemValue)
+      : [...value, itemValue];
+    handleChange(newValue);
+  };
+
+  return (
+    <ListPopover
+      label={label}
+      items={items}
+      display={display}
+      isChecked={isChecked}
+      onToggle={onToggle}
+    />
+  );
+};
+
+const ListField = ({ label, items, multiple = false }: Props) => {
+  return multiple ? (
+    <MultipleListField label={label} items={items} />
+  ) : (
+    <SingleListField label={label} items={items} />
   );
 };
 
