@@ -32,7 +32,7 @@ const ListPopover = ({
       <Popover.Root>
         <Popover.Trigger asChild>
           <button
-            className="border border-amber-400"
+            className="border py-2 border-amber-400"
             type="button"
             aria-label="Update dimensions"
           >
