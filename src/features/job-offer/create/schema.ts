@@ -11,7 +11,7 @@ const jobSchema = z.object({
     .min(3, { message: "Description must be at least 3 characters long" })
     .max(5000, { message: "Description can be at most 5000 characters long" }),
   remoteType: z.enum(remoteTypeEnum.enumValues).array(),
-  employmentType: z.enum(employmentTypeEnum.enumValues),
+  employmentType: z.enum(employmentTypeEnum.enumValues).array(),
   seniority: z.enum(seniorityEnum.enumValues).array(),
   skills: z
     .object({
