@@ -52,6 +52,7 @@ const ListField = ({ label, items }: Props) => {
         <Popover.Trigger asChild>
           <button
             className="border border-amber-400"
+            type="button"
             aria-label="Update dimensions"
           >
             <span>{display}</span>
@@ -65,7 +66,7 @@ const ListField = ({ label, items }: Props) => {
               </Popover.Close>
               <div className="flex flex-col gap-2">
                 {items.map((item) => (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2" key={item.value}>
                     <Checkbox.Root
                       key={item.value}
                       value={item.value}
@@ -75,7 +76,7 @@ const ListField = ({ label, items }: Props) => {
                     >
                       <Checkbox.Indicator>X</Checkbox.Indicator>
                     </Checkbox.Root>
-                    <label>{item.label}</label>
+                    <span>{item.label}</span>
                   </div>
                 ))}
               </div>
