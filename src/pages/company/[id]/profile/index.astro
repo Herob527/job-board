@@ -19,10 +19,12 @@ if (!data) {
       <h1 class="text-center text-3xl font-bold">{data.name}</h1>
     </header>
     <div>
-      <CreateJobOffer client:load />
+      <CreateJobOffer
+        client:load
+        companyId={id} />
     </div>
     <div>
-      <JobOfferList />
+      <JobOfferList client:load />
     </div>
   </section>
 </Layout>
