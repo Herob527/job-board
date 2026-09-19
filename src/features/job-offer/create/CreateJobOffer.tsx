@@ -44,6 +44,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
           name="remoteType"
           children={(field) => (
             <field.ListField
+              multiple
               items={[
                 {
                   label: "Hybrid",
@@ -66,6 +67,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
           name="employmentType"
           children={(field) => (
             <field.ListField
+              multiple
               items={[
                 {
                   label: "Employment Contact",
@@ -89,6 +91,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
           name="seniority"
           children={(field) => (
             <field.ListField
+              multiple
               items={[
                 {
                   label: "Junior",

@@ -9,6 +9,7 @@ interface Item {
 interface Props {
   label: string;
   items: Item[];
+  multiple?: boolean;
 }
 
 // <input
@@ -17,32 +18,42 @@ interface Props {
 //   value={ctx.state.value}
 //   onInput={(e) => ctx.handleChange(e.currentTarget.value)}
 // />
-const ListField = ({ label, items }: Props) => {
-  const ctx = useFieldContext<(string | number)[]>();
+const ListField = ({ label, items, multiple = false }: Props) => {
+  const ctx = useFieldContext<(string | number)[] | string | number>();
 
   const handleChange = (value: string | number) => {
-    const isEmpty =
-      ctx.state.value?.length === undefined || ctx.state.value?.length === 0;
-    if (isEmpty) {
-      return ctx.handleChange([value]);
+    if (!multiple) {
+      return ctx.handleChange(value);
     }
-    const alreadyHas = ctx.state.value.includes(value);
+
+    const currentValue = (() => {
+      const value = ctx.state.value;
+      if (Array.isArray(value)) return value;
+      if (value !== undefined && value !== null) return [value];
+      return [];
+    })();
+
+    const alreadyHas = currentValue.includes(value);
     if (alreadyHas) {
-      return ctx.handleChange(ctx.state.value.filter((item) => item !== value));
+      return ctx.handleChange(currentValue.filter((item) => item !== value));
     }
-    ctx.handleChange([...ctx.state.value, value]);
+    ctx.handleChange([...currentValue, value]);
   };
 
   const display = (() => {
-    if (
-      ctx.state.value?.length === undefined ||
-      ctx.state.value?.length === 0
-    ) {
+    const value = ctx.state.value;
+    if (value === undefined || value === null) {
       return "Pick something";
     }
-    return ctx.state.value
-      .map((it) => items.find((item) => item.value === it)?.label)
-      .join(", ");
+    if (Array.isArray(value)) {
+      if (value.length === 0) return "Pick something";
+      return value
+        .map((it) => items.find((item) => item.value === it)?.label)
+        .join(", ");
+    }
+    return (
+      items.find((item) => item.value === value)?.label ?? "Pick something"
+    );
   })();
 
   return (
@@ -72,7 +83,13 @@ const ListField = ({ label, items }: Props) => {
                       value={item.value}
                       className="bg-white h-8 w-8 rounded-sm flex items-center justify-center border border-amber-400"
                       onCheckedChange={() => handleChange(item.value)}
-                      checked={ctx.state.value?.includes(item.value) ?? false}
+                      checked={(() => {
+                        const value = ctx.state.value;
+                        if (Array.isArray(value)) {
+                          return value.includes(item.value);
+                        }
+                        return value === item.value;
+                      })()}
                     >
                       <Checkbox.Indicator>X</Checkbox.Indicator>
                     </Checkbox.Root>
