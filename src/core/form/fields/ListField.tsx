@@ -12,7 +12,6 @@ interface Props {
   multiple?: boolean;
 }
 
-/** Presentational shell shared by both variants. No generics, no unions. */
 const ListPopover = ({
   label,
   items,
