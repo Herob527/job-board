@@ -21,7 +21,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
   });
   const form = useAppForm({
     validators: { onChange: jobSchema },
-    onSubmit: (data) => mutate({ ...(data.value as JobOfferData) }),
+    onSubmit: (data) => mutate({ ...data.value }),
 
     onSubmitInvalid: (data) => {
       console.error(data);
@@ -37,6 +37,29 @@ const CreateJobOffer = ({ companyId }: Props) => {
         <form.AppField
           name="description"
           children={(field) => <field.TextareaField label="Description" />}
+        />
+
+        <form.AppField
+          name="remoteType"
+          children={(field) => (
+            <field.ListField
+              items={[
+                {
+                  label: "Hybrid",
+                  value: "hybrid",
+                },
+                {
+                  label: "Remote",
+                  value: "remote",
+                },
+                {
+                  label: "On-site",
+                  value: "onsite",
+                },
+              ]}
+              label="Remote type"
+            />
+          )}
         />
         <form.AppField
           name="deadline"
