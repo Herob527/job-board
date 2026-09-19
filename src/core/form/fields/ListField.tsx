@@ -24,7 +24,7 @@ const ListField = ({ label, items }: Props) => {
       <span>{label}</span>
       <Popover.Root>
         <Popover.Trigger>
-          <button type="button">Pick</button>
+          <span>Pick</span>
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content>
