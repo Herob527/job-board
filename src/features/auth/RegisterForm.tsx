@@ -1,15 +1,14 @@
 import { actions } from "astro:actions";
-import { revalidateLogic, useForm, useSelector } from "@tanstack/preact-form";
-import { useMutation } from "@tanstack/preact-query";
+import { revalidateLogic, useForm, useSelector } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
 import { registerSchema } from "./schema";
-import type { FormHTMLAttributes } from "preact";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-interface Props extends FormHTMLAttributes {
+interface Props {
   registerAs: RegisterFormData["registerAs"];
 }
 
@@ -47,7 +46,7 @@ const RegisterForm = ({ registerAs, ...rest }: Props) => {
         ev.preventDefault();
         formHandler.handleSubmit();
       }}
-      class={`inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm ${rest.class}`}
+      className={`inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm ${rest.className}`}
     >
       <CustomField
         formHandler={formHandler}
@@ -97,7 +96,7 @@ const RegisterForm = ({ registerAs, ...rest }: Props) => {
       )}
       <button
         type="submit"
-        class="border border-amber-400 hover:bg-amber-400 hover:text-white px-4 py-2 rounded-l-sm min-w-40 flex-1"
+        className="border border-amber-400 hover:bg-amber-400 hover:text-white px-4 py-2 rounded-l-sm min-w-40 flex-1"
       >
         {" "}
         Register

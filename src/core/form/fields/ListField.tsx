@@ -13,14 +13,14 @@ interface Props {
 
 // <input
 //   type="text"
-//   class="px-3 py-1.5 border border-amber-400"
+//   className="px-3 py-1.5 border border-amber-400"
 //   value={ctx.state.value}
 //   onInput={(e) => ctx.handleChange(e.currentTarget.value)}
 // />
 const ListField = ({ label, items }: Props) => {
   const ctx = useFieldContext<(string | number)[]>();
   return (
-    <label class="inline-flex flex-col">
+    <label className="inline-flex flex-col">
       <span>{label}</span>
       <Popover.Root>
         <Popover.Trigger>
@@ -30,7 +30,7 @@ const ListField = ({ label, items }: Props) => {
           <Popover.Content>
             <div>
               {items.map((it) => (
-                <div class={it.label}>
+                <div key={it.value} className={it.label}>
                   <Checkbox.Root
                     checked={ctx.state?.value?.includes(it.value) ?? false}
                   >

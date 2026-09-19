@@ -1,5 +1,5 @@
 import { actions } from "astro:actions";
-import { useMutation } from "@tanstack/preact-query";
+import { useMutation } from "@tanstack/react-query";
 import type z from "zod";
 import { useAppForm } from "#/core/form/output";
 import withQuery from "#/features/common/withQuery";
@@ -28,7 +28,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
     },
   });
   return (
-    <div class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm">
+    <div className="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm">
       <form.AppForm>
         <form.AppField
           name="title"

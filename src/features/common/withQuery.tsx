@@ -1,5 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/preact-query";
-import type { FunctionComponent } from "preact";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { FunctionComponent } from "react";
 
 const queryClient = new QueryClient();
 

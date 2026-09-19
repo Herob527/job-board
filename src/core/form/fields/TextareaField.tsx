@@ -7,10 +7,10 @@ interface Props {
 const TextareaField = ({ label }: Props) => {
   const ctx = useFieldContext<string>();
   return (
-    <label class="inline-flex flex-col">
+    <label className="inline-flex flex-col">
       <span>{label}</span>
       <textarea
-        class="px-3 py-1.5 border border-amber-400"
+        className="px-3 py-1.5 border border-amber-400"
         value={ctx.state.value}
         onInput={(e) => ctx.handleChange(e.currentTarget.value)}
       />

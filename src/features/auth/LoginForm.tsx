@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
-import { revalidateLogic, useForm } from "@tanstack/preact-form";
-import { useMutation } from "@tanstack/preact-query";
+import { revalidateLogic, useForm } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import type z from "zod";
 import withQuery from "../common/withQuery";
 import CustomField from "../form/Field";
@@ -36,7 +36,7 @@ const LoginForm = () => {
         ev.preventDefault();
         formHandler.handleSubmit();
       }}
-      class="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
+      className="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm"
     >
       <CustomField
         formHandler={formHandler}
@@ -52,7 +52,7 @@ const LoginForm = () => {
         type="password"
       />
 
-      <button type="submit" class="bg-amber-300 px-4 py-2 rounded-sm">
+      <button type="submit" className="bg-amber-300 px-4 py-2 rounded-sm">
         Login
       </button>
     </form>

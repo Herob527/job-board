@@ -1,7 +1,7 @@
 // @ts-check
 
 import node from "@astrojs/node";
-import preact from "@astrojs/preact";
+import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
@@ -26,13 +26,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        react: "preact/compat",
-        "react-dom": "preact/compat",
-      },
-    },
   },
 
-  integrations: [preact()],
+  integrations: [react()],
 });
