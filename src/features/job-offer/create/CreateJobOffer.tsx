@@ -10,6 +10,18 @@ interface Props {
   companyId: string;
 }
 
+const SKILLS = [
+  "Typescript",
+  "React",
+  "NextJS",
+  "Astro",
+  "TailwindCSS",
+  "Kotlin",
+  "Android",
+  "UX Design",
+  "UI Design",
+];
+
 type JobOfferData = z.infer<typeof jobSchema>;
 
 const CreateJobOffer = ({ companyId }: Props) => {
