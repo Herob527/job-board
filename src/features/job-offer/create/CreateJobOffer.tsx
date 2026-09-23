@@ -33,6 +33,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
       }),
   });
   const form = useAppForm({
+    defaultValues: {} as JobOfferData,
     validators: { onChange: jobSchema },
     onSubmit: (data) => mutate({ ...data.value }),
 
@@ -96,6 +97,54 @@ const CreateJobOffer = ({ companyId }: Props) => {
               ]}
               label="Employment type"
             />
+          )}
+        />
+
+        <form.AppField
+          name="skills"
+          mode="array"
+          children={(field) => (
+            <div>
+              <span>Skills</span>
+              <table className="min-w-48">
+                <thead>
+                  <tr>
+                    <th>Skill</th>
+                    <th>Level</th>
+                  </tr>
+                </thead>
+                {field.state.value?.map((v, i) => (
+                  <tr>
+                    <td>
+                      <select value={v?.name}>
+                        <option>Pick one</option>
+                        {SKILLS.map((skill) => (
+                          <option key={skill} value={skill}>
+                            {skill}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>
+                      <select value={v?.seniority}>
+                        <option>Pick one</option>
+                        <option value="Junior">Nice to have</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Mid">Mid</option>
+                        <option value="Senior">Senior</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </table>
+              <button
+                type="button"
+                onClick={() => field.pushValue()}
+                className="border border-amber-400 px-4 py-2"
+              >
+                +
+              </button>
+            </div>
           )}
         />
 
