@@ -41,6 +41,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
       console.error(data);
     },
   });
+  console.log(form.state.values);
   return (
     <div className="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm">
       <form.AppForm>
@@ -113,29 +114,48 @@ const CreateJobOffer = ({ companyId }: Props) => {
                     <th>Level</th>
                   </tr>
                 </thead>
-                {field.state.value?.map((v, i) => (
-                  <tr>
-                    <td>
-                      <select value={v?.name}>
-                        <option>Pick one</option>
-                        {SKILLS.map((skill) => (
-                          <option key={skill} value={skill}>
-                            {skill}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select value={v?.seniority}>
-                        <option>Pick one</option>
-                        <option value="Junior">Nice to have</option>
-                        <option value="Junior">Junior</option>
-                        <option value="Mid">Mid</option>
-                        <option value="Senior">Senior</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
+
+                <tbody>
+                  {field.state.value?.map((v, i, arr) => (
+                    <tr>
+                      <td>
+                        <select
+                          value={v?.name}
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            console.log("[CreateJobOffer - value]", value);
+                            if (value) {
+                              field.handleChange((v) => {
+                                return v.with(i, {
+                                  name: value,
+                                  seniority: v[i]?.seniority,
+                                });
+                              });
+                            }
+                          }}
+                        >
+                          <option>Pick one</option>
+                          {SKILLS.filter(
+                            (skill) => !arr.find((it) => it?.name === skill),
+                          ).map((skill) => (
+                            <option key={skill} value={skill}>
+                              {skill}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select value={v?.seniority}>
+                          <option>Pick one</option>
+                          <option>Nice to have</option>
+                          <option value="Junior">Junior</option>
+                          <option value="Mid">Mid</option>
+                          <option value="Senior">Senior</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
               <button
                 type="button"
