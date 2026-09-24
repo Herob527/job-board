@@ -1,5 +1,18 @@
 import z from "zod";
-import { employmentTypeEnum, remoteTypeEnum, seniorityEnum } from "#/db/schema";
+import {
+  employmentTypeEnum,
+  remoteTypeEnum,
+  seniorityEnum,
+  skillSeniorityEnum,
+} from "#/db/schema";
+
+export const skillItemSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Name must be at least 3 characters long" })
+    .max(100, { message: "Name can be at most 100 characters long" }),
+  seniority: z.enum(skillSeniorityEnum.enumValues),
+});
 
 const jobSchema = z.object({
   title: z
@@ -13,14 +26,7 @@ const jobSchema = z.object({
   remoteType: z.enum(remoteTypeEnum.enumValues).array(),
   employmentType: z.enum(employmentTypeEnum.enumValues).array(),
   seniority: z.enum(seniorityEnum.enumValues).array(),
-  skills: z
-    .object({
-      name: z
-        .string()
-        .min(3, { message: "Name must be at least 3 characters long" })
-        .max(100, { message: "Name can be at most 100 characters long" }),
-      seniority: z.enum(seniorityEnum.enumValues),
-    })
+  skills: skillItemSchema
     .array()
     .min(1, {
       message: "At least one skill must be provided",

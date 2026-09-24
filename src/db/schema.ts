@@ -24,6 +24,12 @@ export const employmentTypeEnum = pgEnum("employment_type", [
   "Mandate",
 ]);
 export const seniorityEnum = pgEnum("seniority", ["Junior", "Mid", "Senior"]);
+export const skillSeniorityEnum = pgEnum("skill_seniority", [
+  "NiceToHave",
+  "Junior",
+  "Mid",
+  "Senior",
+]);
 export const applicationStatusEnum = pgEnum("application_status", [
   "Sent",
   "Seen",
