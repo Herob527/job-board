@@ -6,8 +6,6 @@ import { useAppForm } from "#/core/form/output";
 import withQuery from "#/features/common/withQuery";
 import jobSchema, { skillItemSchema } from "./schema";
 import { useSelector } from "@tanstack/react-form";
-import z4 from "zod/v4";
-import { skillSeniorityEnum } from "#/db/schema";
 
 interface Props {
   companyId: string;
