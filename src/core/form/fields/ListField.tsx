@@ -26,7 +26,7 @@ const ListPopover = ({
   onToggle: (itemValue: string | number) => void;
 }) => {
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <span>{label}</span>
       <Popover.Root>
         <Popover.Trigger asChild>
@@ -64,7 +64,7 @@ const ListPopover = ({
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
-    </>
+    </div>
   );
 };
 

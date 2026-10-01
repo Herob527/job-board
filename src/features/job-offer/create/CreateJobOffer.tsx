@@ -36,14 +36,17 @@ const CreateJobOffer = ({ companyId }: Props) => {
   const form = useAppForm({
     defaultValues: {} as JobOfferData,
     validators: { onChange: jobSchema },
-    onSubmit: (data) => mutate({ ...data.value }),
+    onSubmit: (data) => {
+      console.log("[ - data]", data);
+      return mutate({ ...data.value });
+    },
 
     onSubmitInvalid: (data) => {
       console.error(data);
     },
   });
-  const val = useSelector(form.store, (state) => state.values);
-  console.log("[CreateJobOffer - val]", val);
+  const tracked = useSelector(form.store, (state) => state.errors);
+  console.log(tracked);
   return (
     <div className="inline-flex flex-col gap-2 border border-amber-400 px-4 py-2 rounded-sm">
       <form.AppForm>
@@ -234,6 +237,35 @@ const CreateJobOffer = ({ companyId }: Props) => {
           name="deadline"
           children={(field) => <field.DateField label="Deadline" />}
         />
+        <div className="flex flex-row gap-2">
+          <form.AppField
+            name="minSalary"
+            children={(field) => <field.NumericField label="Min salary" />}
+          />
+          <form.AppField
+            name="maxSalary"
+            children={(field) => <field.NumericField label="Max salary" />}
+          />
+          <form.AppField
+            name="currency"
+            children={(field) => (
+              <field.ListField
+                label="Currency"
+                items={[
+                  { label: "USD", value: "USD" },
+                  { label: "EUR", value: "EUR" },
+                ]}
+              />
+            )}
+          />
+        </div>
+        <button
+          className="border border-amber-400 px-4 py-2 bg-amber-400 text-white hover:bg-amber-500 hover:cursor-pointer"
+          type="submit"
+          onClick={() => form.handleSubmit()}
+        >
+          Submit
+        </button>
       </form.AppForm>
     </div>
   );
