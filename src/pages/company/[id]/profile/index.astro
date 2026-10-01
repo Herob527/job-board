@@ -8,6 +8,7 @@ if (!id) {
 }
 const { companyService } = Astro.locals;
 const data = await companyService.getCompanyById(id);
+const companyJobOffers = await companyService.getCompanyJobOffers(id);
 if (!data) {
   throw new Error("Company not found");
 }
