@@ -37,7 +37,7 @@ const jobSchema = z.object({
   minSalary: z.int().nonnegative().nullable(),
   maxSalary: z.int().nonnegative().nullable(),
   currency: z.string().length(3),
-  deadline: z.date(),
+  deadline: z.string(),
   location: z
     .string()
     .min(3, { message: "Location must be at least 3 characters long" })
