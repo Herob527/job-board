@@ -12,6 +12,7 @@ const TextareaField = ({ label }: Props) => {
       <textarea
         className="px-3 py-1.5 border border-amber-400"
         value={ctx.state.value}
+        name={ctx.name}
         onInput={(e) => ctx.handleChange(e.currentTarget.value)}
       />
     </label>
