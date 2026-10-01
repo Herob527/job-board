@@ -259,6 +259,30 @@ const CreateJobOffer = ({ companyId }: Props) => {
             )}
           />
         </div>
+
+        <div>
+          <form.AppField
+            name="location"
+            mode="array"
+            children={(field) => (
+              <div className="flex flex-col gap-2">
+                <div>
+                  {field.state.value?.map((v, i) => (
+                    <form.AppField
+                      name={`location[${i}]`}
+                      children={(subfield) => (
+                        <subfield.TextareaField key={i} label="Location" />
+                      )}
+                    />
+                  ))}
+                </div>
+                <button type="button" onClick={() => field.pushValue("")}>
+                  +
+                </button>
+              </div>
+            )}
+          />
+        </div>
         <button
           className="border border-amber-400 px-4 py-2 bg-amber-400 text-white hover:bg-amber-500 hover:cursor-pointer"
           type="submit"
