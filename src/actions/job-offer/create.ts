@@ -44,6 +44,6 @@ export default defineAction({
       });
     }
 
-    companyService.createJobOffer(input);
+    await companyService.createJobOffer(input);
   },
 });
