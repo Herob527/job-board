@@ -2,6 +2,7 @@ import z from "zod";
 import {
   company,
   corporateMembership,
+  jobOffer,
   users,
   type corporateRoleEnum,
 } from "#/db/schema";
@@ -9,6 +10,7 @@ import { registerSchema } from "#/features/auth/schema";
 import { OPSTATUS } from "./errorCodes";
 import { getDatabaseError } from "./isDatabaseError";
 import { and, eq } from "drizzle-orm";
+import jobSchema from "#/features/job-offer/create/schema";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
@@ -29,6 +31,8 @@ export default class CompanyService {
   private corporateSchema = registerSchema.and(
     z.object({ registerAs: z.literal("company") }),
   );
+
+  private createSchemaWithId = jobSchema.extend({ companyId: z.string() });
 
   async createCompany(
     input: Pick<
@@ -69,8 +73,12 @@ export default class CompanyService {
     }
   }
 
-  async createJobOffer() {
-    throw new Error("Function not implemented.");
+  async createJobOffer(data: z.infer<typeof this.createSchemaWithId>) {
+    try {
+      await this.#db.insert(jobOffer).values(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async getCompanyWorker(userId: string, companyId: string) {
@@ -85,6 +93,14 @@ export default class CompanyService {
       )
       .limit(1);
     return companyData.at(0);
+  }
+
+  async getCompanyJobOffers(companyId: string) {
+    const jobOffers = await this.#db
+      .select()
+      .from(jobOffer)
+      .where(eq(jobOffer.companyId, companyId));
+    return jobOffers;
   }
 
   async getCompanyById(id: string) {
