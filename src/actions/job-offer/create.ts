@@ -12,9 +12,21 @@ export default defineAction({
         message: "You are not logged in",
       });
     }
+
+    const company = await companyService.getCompanyById(input.companyId);
+    if (!company) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "Company not found",
+      });
+    }
+    const isOwner = company.ownerId === user.id;
     const isAdmin = user.roles.includes("platform_admin");
     const isCorporate = user.roles.includes("corporate");
-    if (!isAdmin && !isCorporate) {
+
+    const canCreate = [isOwner, isCorporate, isAdmin].some(Boolean);
+
+    if (!canCreate) {
       throw new ActionError({
         code: "FORBIDDEN",
         message: "You are not permitted to create job listing",
