@@ -14,8 +14,6 @@ interface AutoCompleteProps extends Props {
   autocompleteOptions?: AutocompleteOption[];
 }
 
-const BaseTextField = ({}: Props) => {};
-
 const TextField = ({ label, autocompleteOptions = [] }: AutoCompleteProps) => {
   const ctx = useFieldContext<string>();
   return (
