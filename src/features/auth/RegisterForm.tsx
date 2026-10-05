@@ -15,6 +15,9 @@ interface Props {
 const RegisterForm = ({ registerAs, ...rest }: Props) => {
   const { mutate } = useMutation({
     mutationFn: (data: RegisterFormData) => actions.register(data),
+    onSuccess: () => {
+      location.reload();
+    },
   });
   const formHandler = useForm({
     defaultValues: {
