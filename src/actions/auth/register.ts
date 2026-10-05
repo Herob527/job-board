@@ -55,7 +55,7 @@ export default defineAction({
         await companyService.assignUserToCompany({
           userId: user.id,
           companyId: company.id,
-          roles: ["company_admin"],
+          roles: ["owner"],
         });
       if (isDuplicate) {
         throw new ActionError({
