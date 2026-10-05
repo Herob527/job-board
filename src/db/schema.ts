@@ -168,9 +168,7 @@ export const jobOffer = pgTable(
       .default(sql`'{}'::remote_type[]`),
     minSalary: integer(),
     maxSalary: integer(),
-    currency: varchar("currency", { length: stringSizes.currency })
-      .array()
-      .notNull(),
+    currency: varchar("currency", { length: stringSizes.currency }).notNull(),
     employmentType: employmentTypeEnum()
       .array()
       .notNull()
