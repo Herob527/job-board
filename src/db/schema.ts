@@ -38,6 +38,7 @@ export const applicationStatusEnum = pgEnum("application_status", [
   "Rejected",
 ]);
 export const corporateRoleEnum = pgEnum("corporate_role", [
+  "owner",
   "company_admin",
   "recruiter",
 ]);
