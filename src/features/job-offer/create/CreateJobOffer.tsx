@@ -251,7 +251,6 @@ const CreateJobOffer = ({ companyId }: Props) => {
             children={(field) => (
               <field.ListField
                 label="Currency"
-                multiple
                 items={[
                   { label: "USD", value: "USD" },
                   { label: "EUR", value: "EUR" },

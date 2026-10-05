@@ -36,7 +36,7 @@ const jobSchema = z.object({
     }),
   minSalary: z.int().nonnegative().nullable(),
   maxSalary: z.int().nonnegative().nullable(),
-  currency: z.string().length(3).array(),
+  currency: z.string().length(3),
   deadline: z.string(),
   location: z
     .string()
