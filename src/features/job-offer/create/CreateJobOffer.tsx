@@ -1,11 +1,11 @@
-/** biome-ignore-all lint/correctness/noChildrenProp: <explanation> */
+/** biome-ignore-all lint/correctness/noChildrenProp: Tanstack form in examples uses children as props */
 import { actions } from "astro:actions";
+import { useSelector } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import z from "zod";
+import type z from "zod";
 import { useAppForm } from "#/core/form/output";
 import withQuery from "#/features/common/withQuery";
 import jobSchema, { skillItemSchema } from "./schema";
-import { useSelector } from "@tanstack/react-form";
 
 interface Props {
   companyId: string;
