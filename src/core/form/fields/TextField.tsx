@@ -88,19 +88,27 @@ const TextField = ({
             autocompleteOptions.options?.length > 0 &&
             hasFocus && (
               <div className="space-y-0.5 flex flex-col border border-amber-400 rounded-sm bg-white drop-shadow-xl">
-                {autocompleteOptions.options.map((option) => (
-                  <button
-                    className="px-3 py-1.5 text-left not-first:border-t not-first:border-amber-400"
-                    key={option.value}
-                    type="button"
-                    onClick={() => {
-                      ctx.handleChange(option.value);
-                      handleBlur("button");
-                    }}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+                {autocompleteOptions.options
+                  .filter((it) =>
+                    ctx.state.value
+                      ? it.label
+                          .toLocaleLowerCase()
+                          .includes(ctx.state.value.toLocaleLowerCase())
+                      : true,
+                  )
+                  .map((option) => (
+                    <button
+                      className="px-3 py-1.5 text-left not-first:border-t not-first:border-amber-400"
+                      key={option.value}
+                      type="button"
+                      onClick={() => {
+                        ctx.handleChange(option.value);
+                        handleBlur("button");
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
               </div>
             )}
         </Popover.Content>
