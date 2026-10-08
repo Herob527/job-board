@@ -61,6 +61,11 @@ const CreateJobOffer = ({ companyId }: Props) => {
                     value: "TypeScript",
                     label: "TypeScript",
                   },
+
+                  {
+                    value: "Test",
+                    label: "test",
+                  },
                 ],
               }}
               label="Title"
