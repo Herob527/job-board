@@ -41,8 +41,10 @@ const TextField = ({
       return;
     }
     if (source === "popover") {
-      const test = wrapperRef.current?.contains(document.activeElement);
-      if (!test) {
+      const isWithinWrapper = wrapperRef.current?.contains(
+        document.activeElement,
+      );
+      if (!isWithinWrapper) {
         setFocus(false);
       }
     }
