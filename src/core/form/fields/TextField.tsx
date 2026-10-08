@@ -82,14 +82,15 @@ const TextField = ({
         <Popover.Content
           align="start"
           onInteractOutside={() => handleBlur("popover")}
+          sideOffset={3}
         >
           {autocompleteOptions &&
             autocompleteOptions.options?.length > 0 &&
             hasFocus && (
-              <div>
+              <div className="space-y-0.5 flex flex-col border border-amber-400 rounded-sm bg-white drop-shadow-xl">
                 {autocompleteOptions.options.map((option) => (
                   <button
-                    className="px-3 py-1.5 border border-amber-400 bg-white"
+                    className="px-3 py-1.5 text-left not-first:border-t not-first:border-amber-400"
                     key={option.value}
                     type="button"
                     onClick={() => {
