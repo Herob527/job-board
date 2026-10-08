@@ -52,7 +52,20 @@ const CreateJobOffer = ({ companyId }: Props) => {
       <form.AppForm>
         <form.AppField
           name="title"
-          children={(field) => <field.TextField label="Title" />}
+          children={(field) => (
+            <field.TextField
+              autocomplete={{
+                dataState: "ready",
+                options: [
+                  {
+                    value: "TypeScript",
+                    label: "TypeScript",
+                  },
+                ],
+              }}
+              label="Title"
+            />
+          )}
         />
         <form.AppField
           name="description"

@@ -11,26 +11,46 @@ interface Props {
   label: string;
 }
 
-interface AutoCompleteProps extends Props {
-  autocompleteOptions?: AutocompleteOption[];
+interface Autocomplete {
+  dataState: "pending" | "loading" | "ready";
+  options: AutocompleteOption[];
 }
 
-const TextField = ({ label, autocompleteOptions = [] }: AutoCompleteProps) => {
+interface AutoCompleteProps extends Props {
+  autocomplete?: Autocomplete;
+}
+
+type BlurSource = "input" | "popover" | "button";
+
+const TextField = ({
+  label,
+  autocomplete: autocompleteOptions,
+}: AutoCompleteProps) => {
   const ctx = useFieldContext<string>();
   const [hasFocus, setFocus] = useState(false);
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFocus = () => {
     setFocus(true);
   };
-  const handleBlur = () => {
-    setFocus(false);
+  const handleBlur = (source: BlurSource) => {
+    if (source === "button") {
+      setFocus(false);
+      return;
+    }
+    if (source === "popover") {
+      const test = wrapperRef.current?.contains(document.activeElement);
+      if (!test) {
+        setFocus(false);
+      }
+    }
   };
 
   return (
     <Popover.Root open>
-      <div className="inline-flex gap-2 flex-col">
+      <div className="inline-flex gap-2 flex-col" ref={wrapperRef}>
         <div className="inline-flex flex-col">
           <span>{label}</span>
 
@@ -46,7 +66,7 @@ const TextField = ({ label, autocompleteOptions = [] }: AutoCompleteProps) => {
                   inputRef.current?.focus();
                 }}
                 onBlur={() => {
-                  handleBlur();
+                  handleBlur("input");
                   inputRef.current?.blur();
                 }}
                 onInput={(e) => ctx.handleChange(e.currentTarget.value)}
@@ -57,20 +77,29 @@ const TextField = ({ label, autocompleteOptions = [] }: AutoCompleteProps) => {
         <span>{ctx.state.meta.errors.at(0)?.code}</span>
       </div>
       <Popover.Portal>
-        <Popover.Content>
-          {hasFocus && (
-            <div>
-              <button
-                id="test"
-                type="button"
-                onClick={() => {
-                  ctx.handleChange("test");
-                }}
-              >
-                Test
-              </button>
-            </div>
-          )}
+        <Popover.Content
+          align="start"
+          onInteractOutside={() => handleBlur("popover")}
+        >
+          {autocompleteOptions &&
+            autocompleteOptions.options?.length > 0 &&
+            hasFocus && (
+              <div>
+                {autocompleteOptions.options.map((option) => (
+                  <button
+                    className="px-3 py-1.5 border border-amber-400 bg-white"
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      ctx.handleChange(option.value);
+                      handleBlur("button");
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
