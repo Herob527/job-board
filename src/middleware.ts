@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import CompanyService from "./utils/CompanyService";
 import jwtService from "./utils/JwtService";
 import UserService from "./utils/UserService";
+import JobOfferService from "./utils/JobOfferService";
 
 const dbUrl =
   process.env.DATABASE_URL ||
@@ -16,6 +17,7 @@ const initDeps = defineMiddleware((context, next) => {
   deps.jwtService = jwtService;
   deps.userService = new UserService(deps.db);
   deps.companyService = new CompanyService(deps.db);
+  deps.jobOfferService = new JobOfferService(deps.db);
   Object.assign(context.locals, deps);
   return next();
 });

@@ -5,6 +5,7 @@ import type { users } from "./db/schema";
 import type CompanyService from "./utils/CompanyService";
 import type jwtService from "./utils/JwtService";
 import type UserService from "./utils/UserService";
+import type JobOfferService from "./utils/JobOfferService";
 
 declare global {
   interface Deps {
@@ -13,6 +14,7 @@ declare global {
     jwtService: typeof jwtService;
     userService: InstanceType<typeof UserService>;
     companyService: InstanceType<typeof CompanyService>;
+    jobOfferService: InstanceType<typeof JobOfferService>;
   }
   namespace App {
     interface Locals extends Deps {}
