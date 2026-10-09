@@ -1,9 +1,9 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 import { drizzle } from "drizzle-orm/node-postgres";
-import CompanyService from "./utils/CompanyService";
-import jwtService from "./utils/JwtService";
-import UserService from "./utils/UserService";
-import JobOfferService from "./utils/JobOfferService";
+import jwtService from "./services/JwtService";
+import UserService from "./services/UserService";
+import CompanyService from "./services/CompanyService";
+import JobOfferService from "./services/JobOfferService";
 
 const dbUrl =
   process.env.DATABASE_URL ||

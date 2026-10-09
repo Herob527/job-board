@@ -3,14 +3,13 @@ import {
   company,
   corporateMembership,
   jobOffer,
-  users,
   type corporateRoleEnum,
 } from "#/db/schema";
 import { registerSchema } from "#/features/auth/schema";
-import { OPSTATUS } from "./errorCodes";
-import { getDatabaseError } from "./isDatabaseError";
 import { and, eq } from "drizzle-orm";
 import jobSchema from "#/features/job-offer/create/schema";
+import { getDatabaseError } from "#/utils/isDatabaseError";
+import { OPSTATUS } from "#/utils/errorCodes";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 

@@ -1,6 +1,6 @@
 import { company, jobOffer } from "#/db/schema";
+import { NotImplementedError } from "#/utils/exceptions";
 import { eq } from "drizzle-orm";
-import { NotImplementedError } from "./exceptions";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 

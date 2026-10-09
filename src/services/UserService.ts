@@ -2,8 +2,8 @@ import { eq } from "drizzle-orm";
 import type z from "zod";
 import { company, corporateMembership, users } from "#/db/schema";
 import type { registerSchema } from "#/features/auth/schema";
-import { OPSTATUS } from "./errorCodes";
-import { getDatabaseError } from "./isDatabaseError";
+import { getDatabaseError } from "#/utils/isDatabaseError";
+import { OPSTATUS } from "#/utils/errorCodes";
 
 type Drizzle = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>;
 
