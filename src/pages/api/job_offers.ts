@@ -1,22 +1,14 @@
 import type { APIRoute } from "astro";
 import z from "zod";
-import type JobOfferService from "#/utils/JobOfferService";
 
 const paramsSchema = z.object({
-  page: z.number().nonnegative(),
-  pageSize: z.number().nonnegative(),
+  page: z.coerce.number().nonnegative(),
+  pageSize: z.coerce.number().nonnegative(),
 });
 
-export interface JobOffersEndpoint {
-  GET: {
-    params: z.infer<typeof paramsSchema>;
-    response: Awaited<ReturnType<JobOfferService["getJobOffersPaginated"]>>;
-  };
-}
-
-export const GET = (async ({ params, locals }) => {
+export const GET = (async ({ params, locals, url }) => {
   const { jobOfferService } = locals;
-  const { data, error } = paramsSchema.safeParse(params);
+  const { data, error } = paramsSchema.safeParse(url.searchParams);
   if (error) {
     return new Response(error.message, {
       status: 400,
