@@ -19,7 +19,7 @@ export default class JobOfferService {
       .from(jobOffer)
       .innerJoin(company, eq(jobOffer.companyId, company.id))
       .limit(pageSize)
-      .offset((page - 1) * pageSize);
+      .offset(Math.max(page - 1, 0) * pageSize);
 
     return jobOffers;
   }
