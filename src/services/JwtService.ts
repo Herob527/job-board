@@ -2,10 +2,17 @@ import { TOKEN_SECRET } from "astro:env/server";
 import * as jose from "jose";
 import type { users } from "#/db/schema";
 
+/**
+ *
+ * Current implementation has issue that it cannot expire token.
+ *
+ * Solution would be having access to DB with refresh token or auth versioning in case of changes in permissions
+ */
 class JwtService {
   private encodedSecret = new TextEncoder().encode(TOKEN_SECRET);
   private algorithm: jose.JWSAlgorithm = "HS256";
-  private expirationTime: string = "1d";
+  // TODO: reduce to 1d on deployment
+  private expirationTime: string = "7d";
   private issuer = "job-board";
   private audience = "user";
 
