@@ -8,7 +8,7 @@ interface AutocompleteOption {
 }
 
 interface Props {
-  label: string;
+  label?: string;
 }
 
 interface Autocomplete {
@@ -54,7 +54,7 @@ const TextField = ({
     <Popover.Root open>
       <div className="inline-flex gap-2 flex-col" ref={wrapperRef}>
         <div className="inline-flex flex-col">
-          <span>{label}</span>
+          {label && <span>{label}</span>}
 
           <Popover.Anchor asChild>
             <div className="inline-flex w-fit">
@@ -76,7 +76,9 @@ const TextField = ({
             </div>
           </Popover.Anchor>
         </div>
-        <span>{ctx.state.meta.errors.at(0)?.code}</span>
+        {ctx.state.meta.errors.at(0)?.code && (
+          <span>{ctx.state.meta.errors.at(0)?.code}</span>
+        )}
       </div>
       <Popover.Portal>
         <Popover.Content
