@@ -143,23 +143,21 @@ const CreateJobOffer = ({ companyId }: Props) => {
                   {field.state.value?.map((v, i, arr) => (
                     <tr key={JSON.stringify(v)} className="flex flex-row gap-2">
                       <td>
-                        {
-                          <form.AppField
-                            name={`skills[${i}].name`}
-                            children={(subfield) => (
-                              <subfield.TextField
-                                key={JSON.stringify(v)}
-                                autocomplete={{
-                                  dataState: "ready",
-                                  options: SKILLS.map((skill) => ({
-                                    value: skill,
-                                    label: skill,
-                                  })),
-                                }}
-                              />
-                            )}
-                          />
-                        }
+                        <form.AppField
+                          name={`skills[${i}].name`}
+                          children={(subfield) => (
+                            <subfield.TextField
+                              key={JSON.stringify(v)}
+                              autocomplete={{
+                                dataState: "ready",
+                                options: SKILLS.map((skill) => ({
+                                  value: skill,
+                                  label: skill,
+                                })),
+                              }}
+                            />
+                          )}
+                        />
                       </td>
                       <td className="inline-flex items-start">
                         <select
@@ -207,7 +205,7 @@ const CreateJobOffer = ({ companyId }: Props) => {
               <button
                 type="button"
                 onClick={() => field.pushValue()}
-                className="border border-amber-400 px-4 py-2"
+                className="border border-amber-400 px-4 py-2 mt-1"
               >
                 +
               </button>
