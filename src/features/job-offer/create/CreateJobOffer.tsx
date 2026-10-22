@@ -141,41 +141,29 @@ const CreateJobOffer = ({ companyId }: Props) => {
 
                 <tbody>
                   {field.state.value?.map((v, i, arr) => (
-                    <tr key={JSON.stringify(v)}>
+                    <tr key={JSON.stringify(v)} className="flex flex-row gap-2">
                       <td>
-                        <select
-                          value={v?.name}
-                          onChange={(e) => {
-                            const value = e.currentTarget.value;
-                            if (value) {
-                              field.setValue((v) => {
-                                const newValue = v.with(i, {
-                                  name: value,
-                                  seniority: v[i]?.seniority,
-                                });
-                                return newValue;
-                              });
-                            }
-                          }}
-                        >
-                          {v?.name === undefined && <option>Pick one</option>}
-
-                          {[
-                            v?.name,
-                            ...SKILLS.filter(
-                              (skill) => !arr.find((it) => it?.name === skill),
-                            ),
-                          ]
-                            .filter(Boolean)
-                            .map((skill) => (
-                              <option key={skill} value={skill}>
-                                {skill}
-                              </option>
-                            ))}
-                        </select>
+                        {
+                          <form.AppField
+                            name={`skills[${i}].name`}
+                            children={(subfield) => (
+                              <subfield.TextField
+                                key={JSON.stringify(v)}
+                                autocomplete={{
+                                  dataState: "ready",
+                                  options: SKILLS.map((skill) => ({
+                                    value: skill,
+                                    label: skill,
+                                  })),
+                                }}
+                              />
+                            )}
+                          />
+                        }
                       </td>
-                      <td>
+                      <td className="inline-flex items-start">
                         <select
+                          className="border border-amber-400 px-3 py-1.5"
                           value={v?.seniority}
                           onChange={(e) => {
                             const value = e.currentTarget.value;
